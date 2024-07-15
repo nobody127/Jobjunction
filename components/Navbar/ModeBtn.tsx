@@ -11,7 +11,11 @@ export default function ModeBtn() {
         toggleTheme();
       }}
     >
-      {theme == "light" ? <Moon /> : <Sun />}
+      {theme == "light" ? (
+        <Moon className="curosor-pointer" />
+      ) : (
+        <Sun className="curosor-pointer" />
+      )}
     </div>
   );
 }
