@@ -3,21 +3,26 @@
 import Link from "next/link";
 import TextComponent from "../TextComp";
 import DesktopNav from "./DeskNav";
+import MobileNav from "./MobNav";
 
 export default function Navbar() {
   return (
-    <div className="p-4 border-b-2 flex justify-between fixed top-0 left-0 w-full bg-white dark:bg-darkBg dark:border-b-slate-500">
+    <div className="p-2 sm:p-4  flex justify-between items-center w-full bg-white dark:bg-darkBg ">
       <div>
         <Link href={"/"}>
           <TextComponent
             text="JobJunction"
-            className="font-bebas lg:text-2xl text-primaryPurple font-bold tracking-wide w-1/2 cursor-pointer"
+            className="border-b-8  border-r-8 border-darkBg  bg-white px-2 py-1 rounded-md cursor-pointer hover:-translate-y-1 font-bebas"
           />
         </Link>
       </div>
 
-      <div className="sm:hidden md:block w-1/2 ">
+      <div className="hidden sm:block w-3/4 ">
         <DesktopNav />
+      </div>
+
+      <div className="block sm:hidden">
+        <MobileNav />
       </div>
     </div>
   );

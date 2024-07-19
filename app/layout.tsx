@@ -5,6 +5,7 @@ import { Providers } from "@/providers";
 import Navbar from "@/components/Navbar/Navbar";
 import Head from "next/head";
 import Background from "@/components/Bg";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -46,7 +47,8 @@ export default function RootLayout({
         <Providers>
           <Background />
           <Navbar />
-          <div className="mt-20">{children}</div>
+          <div className=" overflow-x-hidden">{children}</div>
+          <Footer />
         </Providers>
       </body>
     </html>

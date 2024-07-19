@@ -5,6 +5,7 @@ import { useEffect } from "react";
 
 export default function useThemeChange() {
   const { theme } = useThemeStore();
+
   const oppositeTheme = theme === "light" ? "dark" : "light";
 
   useEffect(() => {

@@ -4,13 +4,15 @@ import TextComponent from "../TextComp";
 import { useSession } from "next-auth/react";
 import ModeBtn from "./ModeBtn";
 import Link from "next/link";
-import { signIn, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
+
 import { Button } from "../ui/button";
 
 export default function DesktopNav() {
   const router = useRouter();
 
   const { data, status } = useSession();
+  console.log(data);
 
   if (status === "loading") {
     return <div>Loading...</div>;
@@ -21,31 +23,32 @@ export default function DesktopNav() {
       {/* Option section  */}
       <div>
         {status === "authenticated" ? (
-          <div className="flex gap-24 items-center">
+          <div className="flex gap-16 justify-end items-center">
             <Link href="/jobs">
               <TextComponent
                 text="Get Job"
-                className="text-lg text-slate-700 font-bold font-kanit cursor-pointer dark:text-slate-200"
+                className="border-b-8  border-r-8 border-darkBg  bg-white px-2 py-1 rounded-md cursor-pointer hover:-translate-y-1 font-bebas"
               />
             </Link>
             <Link href={"/jobs/create"}>
               <TextComponent
                 text="Post Job"
-                className="text-lg text-white font-bold font-bebas bg-primaryPurple px-2 py-1 rounded-md cursor-pointer"
+                className="border-b-8  border-r-8 border-darkBg  bg-white px-2 py-1 rounded-md cursor-pointer hover:-translate-y-1 font-bebas"
               />
             </Link>
-            <img
+            <button onClick={() => signOut()}>Signout</button>
+
+            {/* <img
               src={data.user?.image || ""}
               className="w-8 h-8 rounded-full cursor-pointer"
             />
-            <ModeBtn />
-            <button onClick={() => signOut()}>Signout</button>
+            <ModeBtn /> */}
           </div>
         ) : (
-          <div className="flex gap-24">
+          <div className="flex gap-16 justify-end items-center">
             <Button
-              className="text-lg font-bold font-kanit cursor-pointer  dark:text-white border-primaryPurple border-2 hover:text-black hover:bg-secondaryPurple"
-              variant="outline"
+              className="border-b-8  border-r-8 border-darkBg  bg-white  rounded-md cursor-pointer hover:-translate-y-1 font-bebas text-black hover:bg-white"
+              size={"lg"}
               onClick={() => {
                 router.push("/signin");
               }}
@@ -53,14 +56,14 @@ export default function DesktopNav() {
               Login
             </Button>
             <Button
-              className="text-lg text-slate-700 font-bold font-kanit cursor-pointer bg-primaryPurple text-white hover:text-black"
+              className="border-b-8  border-r-8 border-darkBg  bg-white  rounded-md cursor-pointer hover:-translate-y-1 hover:bg-white font-bebas text-black"
               onClick={() => {
                 router.push("/signup");
               }}
             >
               Signup
             </Button>
-            <ModeBtn />
+            {/* <ModeBtn /> */}
           </div>
         )}
       </div>

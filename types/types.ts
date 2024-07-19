@@ -7,3 +7,9 @@ export type ThemeStoreType = {
   theme: string;
   toggleTheme: () => void;
 };
+
+export type FieldsMarqueeType = {
+  field: string;
+  jobs: number;
+  applied: string;
+};

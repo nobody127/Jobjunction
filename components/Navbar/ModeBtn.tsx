@@ -2,19 +2,25 @@ import useThemeChange from "@/app/hooks/Theme";
 import { useThemeStore } from "@/store/store";
 import { Moon, Sun } from "lucide-react";
 
-export default function ModeBtn() {
+export default function ModeBtn({ ...props }: any) {
   const { theme, toggleTheme } = useThemeStore();
   useThemeChange();
   return (
-    <div
-      onClick={() => {
-        toggleTheme();
-      }}
-    >
+    <div>
       {theme == "light" ? (
-        <Moon className="curosor-pointer" />
+        <Moon
+          className={`cursor-pointer ${props.className}`}
+          onClick={() => {
+            toggleTheme();
+          }}
+        />
       ) : (
-        <Sun className="curosor-pointer" />
+        <Sun
+          className={`cursor-pointer  ${props.className}`}
+          onClick={() => {
+            toggleTheme();
+          }}
+        />
       )}
     </div>
   );
