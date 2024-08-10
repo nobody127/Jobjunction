@@ -8,7 +8,6 @@ import { useSession } from "next-auth/react";
 export default function DesktopNav() {
   const router = useRouter();
   const session = useSession();
-  console.log(session);
 
   if (session.status === "loading") {
     return <div>Loading....</div>;
