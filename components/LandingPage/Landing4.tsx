@@ -1,6 +1,9 @@
+"use client";
+
 import NumberTicker from "@/components/magicui/number-ticker";
 import TextComponent from "../TextComp";
 import { Plus } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 function NumberTickerDemo({ value }: { value: number }) {
   return (
@@ -11,6 +14,8 @@ function NumberTickerDemo({ value }: { value: number }) {
 }
 
 export default function LandingPart4() {
+  const session = useSession();
+  console.log(session);
   return (
     <div className=" flex flex-col items-center gap-12 md:gap-0 md:flex-row md:justify-evenly bg-white px-4 md:px-8 mt-28 md:mt-52 ">
       <div>

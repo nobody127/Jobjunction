@@ -21,6 +21,7 @@ const config = {
       fontFamily: {
         kanit: ["Kanit", "sans-serif"],
         bebas: ["Bebas Neue", "sans-serif"],
+        radio: ["Radio Canada Big", "sans-serif"],
       },
       colors: {
         primaryPurple: "#a51ecc",
