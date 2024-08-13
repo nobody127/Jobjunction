@@ -1,25 +1,30 @@
 "use client";
 
-import { signIn } from "@/auth";
+import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signinSchema } from "@/schema/signin";
-import React, {
-  ChangeEventHandler,
-  MouseEventHandler,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import React, { useState } from "react";
 import { SigninInputType } from "@/schema/signin";
 import { useRouter } from "next/navigation";
-import { AtSign, ChevronLeft, ChevronRight, X } from "lucide-react";
+import {
+  AtSign,
+  ChevronLeft,
+  ChevronRight,
+  Instagram,
+  Linkedin,
+  Lock,
+  Mail,
+  Twitter,
+  X,
+} from "lucide-react";
+import { Separator } from "../ui/separator";
 
 export default function SigninForm() {
   const [items, setItems] = useState<string[] | undefined>([]);
   const router = useRouter();
-  const [currentIndex, setCurrentIndex] = useState(2);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const {
     register,
     handleSubmit,
@@ -33,14 +38,13 @@ export default function SigninForm() {
 
   async function onSubmit(data: any) {
     console.log(data);
-    reset();
     router.push("/");
   }
 
   const filedValues = [
     ["username", "email", "password"],
     ["bio", "instagram_url", "linkedin_url", "twitter_url"],
-    ["interest"],
+    ["skills"],
   ];
   async function next() {
     const fields = filedValues[currentIndex];
@@ -51,7 +55,7 @@ export default function SigninForm() {
 
     if (currentIndex > -1 && currentIndex < 3) {
       if (currentIndex === 2) {
-        await handleSubmit(onSubmit)();
+        return await handleSubmit(onSubmit)();
       }
       setCurrentIndex((prev) => prev + 1);
     }
@@ -117,12 +121,15 @@ export default function SigninForm() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-8">
             <div>
               <label>Username</label>
-              <input
-                type="text"
-                placeholder="Ramu_09"
-                className="border-2 border-black p-2 rounded-md text-black w-full"
-                {...register("username")}
-              />
+              <div className="flex gap-2 items-center border-2 border-black p-2 rounded-md text-black w-full">
+                <AtSign className="bg-white text-gray-400 size-5" />
+                <input
+                  type="text"
+                  placeholder="Ramu_09"
+                  className="outline-none w-full"
+                  {...register("username")}
+                />
+              </div>
               {errors.username?.message && (
                 <p className="text-red-500">{errors.username?.message}</p>
               )}
@@ -130,12 +137,16 @@ export default function SigninForm() {
 
             <div>
               <label>Email</label>
-              <input
-                type="email"
-                placeholder="ramu@gmail.com"
-                className="border-2 border-black p-2 rounded-md text-black w-full"
-                {...register("email")}
-              />
+
+              <div className="flex gap-2 items-center border-2 border-black p-2 rounded-md text-black">
+                <Mail className=" bg-white text-gray-400 size-5" />
+                <input
+                  type="email"
+                  placeholder="ramu@gmail.com"
+                  className=" w-full outline-none"
+                  {...register("email")}
+                />
+              </div>
               {errors.email?.message && (
                 <p className="text-red-500">{errors.email?.message}</p>
               )}
@@ -143,12 +154,15 @@ export default function SigninForm() {
 
             <div>
               <label>Password</label>
-              <input
-                type="password"
-                placeholder="Hello@1"
-                className="border-2 border-black p-2 rounded-md text-black w-full"
-                {...register("password")}
-              />
+              <div className="border-2 border-black p-2 rounded-md text-black w-full flex gap-2 items-center">
+                <Lock className=" bg-white text-gray-400 size-5" />
+                <input
+                  type="password"
+                  placeholder="Hello@1"
+                  className="w-full outline-none"
+                  {...register("password")}
+                />
+              </div>
               {errors.password?.message && (
                 <p className="text-red-500">{errors.password?.message}</p>
               )}
@@ -175,12 +189,16 @@ export default function SigninForm() {
 
             <div>
               <label>Instagram Link</label>
-              <input
-                type="text"
-                placeholder="Instagram url"
-                className="border-2 border-black p-2 rounded-md text-black w-full"
-                {...register("instagram_url")}
-              />
+              <div className="border-2 border-black p-2 rounded-md text-black w-full flex gap-2 items-center">
+                <Instagram className=" bg-white text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Instagram url"
+                  className="outline-none w-full"
+                  {...register("instagram_url")}
+                />
+              </div>
+
               {errors.instagram_url?.message && (
                 <p className="text-red-500">{errors.instagram_url?.message}</p>
               )}
@@ -188,12 +206,17 @@ export default function SigninForm() {
 
             <div>
               <label>Twitter Link</label>
-              <input
-                type="text"
-                placeholder="Twitter url"
-                className="border-2 border-black p-2 rounded-md text-black w-full"
-                {...register("twitter_url")}
-              />
+
+              <div className="border-2 border-black p-2 rounded-md text-black w-full flex gap-2 items-center">
+                <Twitter className=" bg-white text-gray-400 " />
+                <input
+                  type="text"
+                  placeholder="Twitter url"
+                  className="outline-none w-full"
+                  {...register("twitter_url")}
+                />
+              </div>
+
               {errors.twitter_url?.message && (
                 <p className="text-red-500">{errors.twitter_url?.message}</p>
               )}
@@ -201,12 +224,15 @@ export default function SigninForm() {
 
             <div className="col-span-2">
               <label>Linkedin Link</label>
-              <input
-                type="text"
-                placeholder="linkedin url"
-                className="border-2 border-black p-2 rounded-md text-black w-full "
-                {...register("linkedin_url")}
-              />
+              <div className="border-2 border-black p-2 rounded-md text-black w-full flex gap-2 items-center">
+                <Linkedin className="bg-white text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="linkedin url"
+                  className=" w-full outline-none"
+                  {...register("linkedin_url")}
+                />
+              </div>
 
               {errors.linkedin_url?.message && (
                 <p className="text-red-500">{errors.linkedin_url?.message}</p>
@@ -223,7 +249,7 @@ export default function SigninForm() {
             <select
               {...register("skills")}
               multiple
-              className="w-full border-2 rounded-lg border-black"
+              className="w-full border-2 rounded-lg border-black no-scrollbar"
               onChange={handleInterestChange}
             >
               <option value={"reactjs"} className="mt-4">
@@ -277,6 +303,16 @@ export default function SigninForm() {
           {currentIndex === 2 ? "Submit" : "Next Step"}
         </Button>
       </form>
+
+      <Separator className="my-4" />
+      <div>
+        <Button
+          className="bg-green-700"
+          onClick={() => signIn("google", { redirectTo: "/signin" })}
+        >
+          <p>Login With Google </p>
+        </Button>
+      </div>
     </div>
   );
 }

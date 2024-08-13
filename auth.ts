@@ -13,10 +13,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       authorize: async (credentials) => {
         let users = {};
-        users = {
-          email: credentials.email,
-          username: credentials.username,
-        };
+        users = credentials;
         return users;
       },
     }),
