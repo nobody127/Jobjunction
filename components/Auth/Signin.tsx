@@ -37,8 +37,7 @@ export default function SigninForm() {
   });
 
   async function onSubmit(data: any) {
-    console.log(data);
-    router.push("/");
+    const response = await signIn("credentials", data);
   }
 
   const filedValues = [
@@ -308,7 +307,7 @@ export default function SigninForm() {
       <div>
         <Button
           className="bg-green-700"
-          onClick={() => signIn("google", { redirectTo: "/signin" })}
+          onClick={() => signIn("google", { redirectTo: "/" })}
         >
           <p>Login With Google </p>
         </Button>

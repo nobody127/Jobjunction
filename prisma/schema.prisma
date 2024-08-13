@@ -12,9 +12,14 @@ datasource db {
 model User{
   id Int @id @default(autoincrement())
   username String @unique
-  profile String 
-  bio String 
+  email String? @unique
   password String 
+  avatar String?
+  bio String 
+  instagram_url String?
+  linkedin_url String?
+  twitter_url String?
+  skills String[]
   posts Post[]
 }
 
