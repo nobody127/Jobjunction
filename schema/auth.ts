@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const signinSchema = z.object({
+export const signupSchema = z.object({
   username: z
     .string({ required_error: "Oops! You missed a spot" })
     .min(2, { message: "Username must be of length 2" }),
@@ -28,4 +28,19 @@ export const signinSchema = z.object({
   skills: z.string().array().nonempty({ message: "Must select one" }),
 });
 
+export const signinSchema = z.object({
+  username: z
+    .string({ required_error: "Oops! You missed a spot" })
+    .min(2, { message: "Username must be of length 2" }),
+  password: z
+    .string({ required_error: "Oops! You missed a spot." })
+    .min(6, { message: "Password must be atleast 6 char long" })
+    .max(8, { message: "Password can't be greater than 8 char" })
+    .regex(new RegExp(".*[`~<>?,./!@#$%^&*()\\-_+=\"'|{}\\[\\];:\\\\].*"), {
+      message: "Must include a special character",
+    })
+    .regex(new RegExp(".*[0-9].*"), { message: "Must include a number" }),
+});
+
+export type SignupInputType = z.infer<typeof signupSchema>;
 export type SigninInputType = z.infer<typeof signinSchema>;
