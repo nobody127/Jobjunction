@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
+import { FaGoogle } from "react-icons/fa";
 
 export default function SigninForm() {
   const {
@@ -73,11 +75,19 @@ export default function SigninForm() {
       <Separator className="my-4" />
       <div>
         <Button
-          className="bg-green-700"
-          onClick={() => signIn("google", { redirectTo: "/" })}
+          className="bg-green-700 w-full flex gap-4"
+          onClick={() => signIn("google")}
         >
           <p>Signin With Google </p>
+          <FaGoogle />
         </Button>
+
+        <p className="mt-2 text-center text-gray-400">
+          New User ?
+          <Link href="/signup">
+            <span className="cursor-pointer"> Create Account</span>
+          </Link>
+        </p>
       </div>
     </div>
   );

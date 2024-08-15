@@ -1,9 +1,10 @@
 "use server";
 import prisma from "@/db";
 import { signupSchema, SignupInputType } from "@/schema/auth";
-import { redirect } from "next/navigation";
+import bcrypt from "bcryptjs";
 
 export async function CreateUser(data: SignupInputType) {
+  const saltRounds = 10;
   try {
     const { success } = signupSchema.safeParse(data);
     if (!success) throw new Error("Schema validation Error");
@@ -22,11 +23,13 @@ export async function CreateUser(data: SignupInputType) {
 
     if (isUserExist) throw new Error("User already exist");
 
+    const hashedPassword = await bcrypt.hash(data.password, saltRounds);
+
     const newUser = await prisma.user.create({
       data: {
         username: data.username,
         email: data.email,
-        password: data.password,
+        password: hashedPassword,
         avatar: data.avatar,
         bio: data.bio,
         instagram_url: data.instagram_url,

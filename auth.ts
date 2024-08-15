@@ -3,6 +3,8 @@ import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import prisma from "./db";
 import { signinSchema } from "./schema/auth";
+import { NextConfig } from "next";
+import bcrypt from "bcryptjs";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -21,20 +23,38 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           if (!success) throw new Error("Schema validation failed");
 
+          // const isUserExist = await prisma.user.findFirst({
+          //   where: {
+          //     username: data.username,
+          //     password: data.password,
+          //   },
+          // });
+
           const isUserExist = await prisma.user.findFirst({
             where: {
               username: data.username,
-              password: data.password,
             },
           });
 
           if (!isUserExist) {
-            throw new Error("Please Give Correct username & password");
+            throw new Error("User not found");
+          }
+
+          const checkPassword = await bcrypt.compare(
+            data.password,
+            isUserExist.password as string
+          );
+
+          console.log(checkPassword);
+
+          if (!checkPassword) {
+            throw new Error("Password is wrong");
           }
 
           return {
             id: isUserExist?.id,
             username: isUserExist?.username,
+            email: isUserExist.email,
           };
         } catch (error) {
           return null;
@@ -63,14 +83,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 provider_id: account.providerAccountId,
               },
             });
-
-            console.log("user details", createdUser);
             return true;
           }
-          console.log("already exits", userDetials);
           return true;
         } catch (error) {
-          console.log("error", error);
           return false;
         }
       }
@@ -80,8 +96,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return false;
     },
+
+    async redirect({ url, baseUrl }) {
+      return baseUrl;
+    },
+
+    async jwt({ token, user }: any) {
+      if (user) {
+        token.id = user.id;
+        token.username = user.username;
+      }
+      return token;
+    },
+
+    async session({ session, token }: any) {
+      session.user.id = token.id as string;
+      session.user.email = token.email as string;
+      session.user.username = token.username as string;
+      return session;
+    },
   },
   pages: {
     signIn: "/signin",
   },
-});
+}) satisfies NextConfig;

@@ -21,6 +21,8 @@ import {
 } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { CreateUser } from "@/app/actions/signup";
+import Link from "next/link";
+import { FaGoogle } from "react-icons/fa";
 
 export default function SignupForm() {
   const [items, setItems] = useState<string[] | undefined>([]);
@@ -330,11 +332,19 @@ export default function SignupForm() {
       <Separator className="my-4" />
       <div>
         <Button
-          className="bg-green-700"
-          onClick={() => signIn("google", { redirectTo: "/" })}
+          className="bg-green-700 w-full flex gap-4"
+          onClick={() => signIn("google")}
         >
           <p>Signup With Google </p>
+          <FaGoogle />
         </Button>
+
+        <p className="mt-2 text-center text-gray-400">
+          Existing User ?
+          <Link href="/signin">
+            <span className="cursor-pointer"> Login to Account</span>
+          </Link>
+        </p>
       </div>
     </div>
   );
