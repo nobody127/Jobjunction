@@ -7,6 +7,7 @@ import Background from "@/components/Bg";
 import Footer from "@/components/Footer";
 import AuthProvider from "@/provider";
 import { auth } from "@/auth";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -61,7 +62,10 @@ export default async function RootLayout({
         <AuthProvider session={session}>
           <Background />
           <Navbar />
-          <div className=" overflow-x-hidden ">{children}</div>
+          <div className=" overflow-x-hidden ">
+            {children}
+            <Toaster />
+          </div>
           <Footer />
         </AuthProvider>
       </body>

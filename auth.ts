@@ -23,13 +23,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           if (!success) throw new Error("Schema validation failed");
 
-          // const isUserExist = await prisma.user.findFirst({
-          //   where: {
-          //     username: data.username,
-          //     password: data.password,
-          //   },
-          // });
-
           const isUserExist = await prisma.user.findFirst({
             where: {
               username: data.username,
@@ -45,8 +38,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             isUserExist.password as string
           );
 
-          console.log(checkPassword);
-
           if (!checkPassword) {
             throw new Error("Password is wrong");
           }
@@ -56,7 +47,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             username: isUserExist?.username,
             email: isUserExist.email,
           };
-        } catch (error) {
+        } catch (error: any) {
           return null;
         }
       },
@@ -83,6 +74,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 provider_id: account.providerAccountId,
               },
             });
+
+            if (!createdUser) throw new Error("Error while saving the user");
             return true;
           }
           return true;
@@ -96,11 +89,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return false;
     },
-
-    async redirect({ url, baseUrl }) {
-      return baseUrl;
-    },
-
     async jwt({ token, user }: any) {
       if (user) {
         token.id = user.id;
@@ -118,5 +106,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   pages: {
     signIn: "/signin",
+    error: "/error",
   },
 }) satisfies NextConfig;

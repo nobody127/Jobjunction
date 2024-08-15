@@ -12,17 +12,17 @@ import {
   AtSign,
   ChevronLeft,
   ChevronRight,
-  Instagram,
-  Linkedin,
+  Eye,
+  EyeOff,
   Lock,
   Mail,
-  Twitter,
   X,
 } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { CreateUser } from "@/app/actions/signup";
 import Link from "next/link";
-import { FaGoogle } from "react-icons/fa";
+import { FaGoogle, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { toast } from "sonner";
 
 export default function SignupForm() {
   const [items, setItems] = useState<string[] | undefined>([]);
@@ -33,12 +33,14 @@ export default function SignupForm() {
     handleSubmit,
     trigger,
     reset,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors },
   } = useForm<SignupInputType>({
     resolver: zodResolver(signupSchema),
   });
+
   const [error, setError] = useState<Boolean>(false);
   const [success, setSuccess] = useState(false);
+  const [passwordClick, setPasswordClick] = useState(false);
 
   async function onSubmit(data: any) {
     const response = await CreateUser(data);
@@ -53,6 +55,7 @@ export default function SignupForm() {
       setTimeout(() => {
         setSuccess(false);
       }, 2000);
+      router.push("/signin");
     }
     setCurrentIndex(0);
     reset();
@@ -111,240 +114,257 @@ export default function SignupForm() {
     });
   }
   return (
-    <div className=" mx-auto mt-6 border-2 border-b-8 border-r-8 border-black  rounded-xl bg-white p-4 md:p-8 w-1/2 ">
-      {error ? <div className="text-red-500 text-2xl">Error Occured</div> : ""}
-      {success ? (
-        <div className="text-green-600 text-2xl">Successfully created</div>
-      ) : (
-        ""
-      )}
+    <div>
+      {success &&
+        toast("Account created Successfully.", {
+          duration: 2000,
+        })}
 
-      <div className="flex gap-2 ">
-        {currentIndex > 0 ? (
-          <ChevronLeft className="cursor-pointer" onClick={handlePrevious} />
-        ) : (
-          ""
-        )}
-        <p className="text-gray-600 mb-6">Step {currentIndex + 1} / 3</p>
-        {currentIndex >= 0 ? (
-          <ChevronRight className="cursor-pointer" onClick={handleNext} />
-        ) : (
-          ""
-        )}
-      </div>
+      {error &&
+        toast("Something Went Wrong", {
+          duration: 2000,
+        })}
 
-      <>
-        <p className="p-2 bg-white w-fit font-bold font-kanit text-3xl rounded-sm mb-6 border-2 border-b-8 border-r-8 border-black ">
-          JJ
-        </p>
-        <p className="text-2xl font-radio font-bold mb-2">Sign Up</p>
-        <p className="mb-6">Start your journey with jobjunction</p>
-      </>
+      <div className=" mx-auto mt-6 border-2 border-b-8 border-r-8 border-black  rounded-xl bg-white p-4 md:p-8 w-1/2 ">
+        <div className="flex gap-2 ">
+          {currentIndex > 0 ? (
+            <ChevronLeft className="cursor-pointer" onClick={handlePrevious} />
+          ) : (
+            ""
+          )}
+          <p className="text-gray-600 mb-6">Step {currentIndex + 1} / 3</p>
+          {currentIndex >= 0 ? (
+            <ChevronRight className="cursor-pointer" onClick={handleNext} />
+          ) : (
+            ""
+          )}
+        </div>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {currentIndex === 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-8">
-            <div>
-              <label>Username</label>
-              <div className="flex gap-2 items-center border-2 border-black p-2 rounded-md text-black w-full">
-                <AtSign className="bg-white text-gray-400 size-5" />
-                <input
-                  type="text"
-                  placeholder="Ramu_09"
-                  className="outline-none w-full"
-                  {...register("username")}
-                />
-              </div>
-              {errors.username?.message && (
-                <p className="text-red-500">{errors.username?.message}</p>
-              )}
-            </div>
+        <>
+          <p className="p-2 bg-white w-fit font-bold font-kanit text-3xl rounded-sm mb-6 border-2 border-b-8 border-r-8 border-black ">
+            JJ
+          </p>
+          <p className="text-2xl font-radio font-bold mb-2">Sign Up</p>
+          <p className="mb-6">Start your journey with jobjunction</p>
+        </>
 
-            <div>
-              <label>Email</label>
-
-              <div className="flex gap-2 items-center border-2 border-black p-2 rounded-md text-black">
-                <Mail className=" bg-white text-gray-400 size-5" />
-                <input
-                  type="email"
-                  placeholder="ramu@gmail.com"
-                  className=" w-full outline-none"
-                  {...register("email")}
-                />
-              </div>
-              {errors.email?.message && (
-                <p className="text-red-500">{errors.email?.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label>Password</label>
-              <div className="border-2 border-black p-2 rounded-md text-black w-full flex gap-2 items-center">
-                <Lock className=" bg-white text-gray-400 size-5" />
-                <input
-                  type="password"
-                  placeholder="Hello@1"
-                  className="w-full outline-none"
-                  {...register("password")}
-                />
-              </div>
-              {errors.password?.message && (
-                <p className="text-red-500">{errors.password?.message}</p>
-              )}
-            </div>
-          </div>
-        ) : (
-          ""
-        )}
-
-        {currentIndex === 1 ? (
-          <div className="grid grid-cols-2 gap-x-4 gap-y-8">
-            <div className=" col-span-2">
-              <label>Bio</label>
-              <input
-                type="text"
-                placeholder="Write"
-                className="border-2 border-black p-2 rounded-md text-black w-full"
-                {...register("bio")}
-              />
-              {errors.bio?.message && (
-                <p className="text-red-500">{errors.bio?.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label>Instagram Link</label>
-              <div className="border-2 border-black p-2 rounded-md text-black w-full flex gap-2 items-center">
-                <Instagram className=" bg-white text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Instagram url"
-                  className="outline-none w-full"
-                  {...register("instagram_url")}
-                />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {currentIndex === 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-8">
+              <div>
+                <label>Username</label>
+                <div className="flex gap-2 items-center border-2 border-black p-2 rounded-md text-black w-full">
+                  <AtSign className="bg-white text-gray-400 size-5" />
+                  <input
+                    type="text"
+                    placeholder="Ramu_09"
+                    className="outline-none w-full"
+                    {...register("username")}
+                  />
+                </div>
+                {errors.username?.message && (
+                  <p className="text-red-500">{errors.username?.message}</p>
+                )}
               </div>
 
-              {errors.instagram_url?.message && (
-                <p className="text-red-500">{errors.instagram_url?.message}</p>
-              )}
-            </div>
+              <div>
+                <label>Email</label>
 
-            <div>
-              <label>Twitter Link</label>
-
-              <div className="border-2 border-black p-2 rounded-md text-black w-full flex gap-2 items-center">
-                <Twitter className=" bg-white text-gray-400 " />
-                <input
-                  type="text"
-                  placeholder="Twitter url"
-                  className="outline-none w-full"
-                  {...register("twitter_url")}
-                />
+                <div className="flex gap-2 items-center border-2 border-black p-2 rounded-md text-black">
+                  <Mail className=" bg-white text-gray-400 size-5" />
+                  <input
+                    type="email"
+                    placeholder="ramu@gmail.com"
+                    className=" w-full outline-none"
+                    {...register("email")}
+                  />
+                </div>
+                {errors.email?.message && (
+                  <p className="text-red-500">{errors.email?.message}</p>
+                )}
               </div>
 
-              {errors.twitter_url?.message && (
-                <p className="text-red-500">{errors.twitter_url?.message}</p>
-              )}
-            </div>
-
-            <div className="col-span-2">
-              <label>Linkedin Link</label>
-              <div className="border-2 border-black p-2 rounded-md text-black w-full flex gap-2 items-center">
-                <Linkedin className="bg-white text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="linkedin url"
-                  className=" w-full outline-none"
-                  {...register("linkedin_url")}
-                />
-              </div>
-
-              {errors.linkedin_url?.message && (
-                <p className="text-red-500">{errors.linkedin_url?.message}</p>
-              )}
-            </div>
-          </div>
-        ) : (
-          ""
-        )}
-
-        {currentIndex === 2 ? (
-          <div className="mt-8 ">
-            {/* <p className="text-lg font-bold">Interested Fields</p> */}
-            <select
-              {...register("skills")}
-              multiple
-              className="w-full border-2 rounded-lg border-black no-scrollbar"
-              onChange={handleInterestChange}
-            >
-              <option value={"reactjs"} className="mt-4">
-                Reactjs
-              </option>
-              <option value={"nextjs"} className="mt-4">
-                Nextjs
-              </option>
-              <option value={"javascript"} className="mt-4">
-                Javascript
-              </option>
-              <option value={"typescript"} className="mt-4">
-                Typescript
-              </option>
-              <option value={"express"} className="mt-4">
-                Express
-              </option>
-              <option value={"nodejs"} className="mt-4">
-                Nodejs
-              </option>
-              <option value="mongodb" className="mt-4">
-                Mongodb
-              </option>
-            </select>
-
-            {errors.skills?.message && (
-              <p className="text-red-500">{errors.skills?.message}</p>
-            )}
-
-            <div className="flex gap-4 flex-wrap mt-4">
-              {items?.map((e: string) => {
-                return (
-                  <div className=" bg-gray-300 rounded-full p-2 w-fit flex items-center gap-2">
-                    <p>{e}</p>
-                    <X
-                      className="cursor-pointer"
-                      onClick={() => {
-                        deleteField(e);
-                      }}
-                    />
+              <div>
+                <label>Password</label>
+                <div className="border-2 border-black p-2 rounded-md text-black w-full flex gap-2 items-center">
+                  <Lock className=" bg-white text-gray-400 size-5" />
+                  <input
+                    type={passwordClick ? "text" : "password"}
+                    placeholder="Hello@1"
+                    className="w-full outline-none"
+                    {...register("password")}
+                  />
+                  <div onClick={() => setPasswordClick((prev) => !prev)}>
+                    {passwordClick ? (
+                      <Eye className="cursor-pointer" />
+                    ) : (
+                      <EyeOff className="cursor-pointer" />
+                    )}
                   </div>
-                );
-              })}
+                </div>
+                {errors.password?.message && (
+                  <p className="text-red-500">{errors.password?.message}</p>
+                )}
+              </div>
             </div>
-          </div>
-        ) : (
-          ""
-        )}
+          ) : (
+            ""
+          )}
 
-        <Button onClick={next} className="flex mt-4 ml-auto">
-          {currentIndex === 2 ? "Submit" : "Next Step"}
-        </Button>
-      </form>
+          {currentIndex === 1 ? (
+            <div className="grid grid-cols-2 gap-x-4 gap-y-8">
+              <div className=" col-span-2">
+                <label>Bio</label>
+                <input
+                  type="text"
+                  placeholder="Write"
+                  className="border-2 border-black p-2 rounded-md text-black w-full"
+                  {...register("bio")}
+                />
+                {errors.bio?.message && (
+                  <p className="text-red-500">{errors.bio?.message}</p>
+                )}
+              </div>
 
-      <Separator className="my-4" />
-      <div>
-        <Button
-          className="bg-green-700 w-full flex gap-4"
-          onClick={() => signIn("google")}
-        >
-          <p>Signup With Google </p>
-          <FaGoogle />
-        </Button>
+              <div>
+                <label>Instagram Link</label>
+                <div className="border-2 border-black p-2 rounded-md text-black w-full flex gap-2 items-center">
+                  <FaInstagram className="bg-white text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Instagram url"
+                    className="outline-none w-full"
+                    {...register("instagram_url")}
+                  />
+                </div>
 
-        <p className="mt-2 text-center text-gray-400">
-          Existing User ?
-          <Link href="/signin">
-            <span className="cursor-pointer"> Login to Account</span>
-          </Link>
-        </p>
+                {errors.instagram_url?.message && (
+                  <p className="text-red-500">
+                    {errors.instagram_url?.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label>Twitter Link</label>
+
+                <div className="border-2 border-black p-2 rounded-md text-black w-full flex gap-2 items-center">
+                  <FaTwitter className=" bg-white text-gray-400 " />
+                  <input
+                    type="text"
+                    placeholder="Twitter url"
+                    className="outline-none w-full"
+                    {...register("twitter_url")}
+                  />
+                </div>
+
+                {errors.twitter_url?.message && (
+                  <p className="text-red-500">{errors.twitter_url?.message}</p>
+                )}
+              </div>
+
+              <div className="col-span-2">
+                <label>Linkedin Link</label>
+                <div className="border-2 border-black p-2 rounded-md text-black w-full flex gap-2 items-center">
+                  <FaLinkedin className="bg-white text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="linkedin url"
+                    className=" w-full outline-none"
+                    {...register("linkedin_url")}
+                  />
+                </div>
+
+                {errors.linkedin_url?.message && (
+                  <p className="text-red-500">{errors.linkedin_url?.message}</p>
+                )}
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
+
+          {currentIndex === 2 ? (
+            <div className="mt-8 ">
+              {/* <p className="text-lg font-bold">Interested Fields</p> */}
+              <select
+                {...register("skills")}
+                multiple
+                className="w-full border-2 rounded-lg border-black no-scrollbar"
+                onChange={handleInterestChange}
+              >
+                <option value={"reactjs"} className="mt-4">
+                  Reactjs
+                </option>
+                <option value={"nextjs"} className="mt-4">
+                  Nextjs
+                </option>
+                <option value={"javascript"} className="mt-4">
+                  Javascript
+                </option>
+                <option value={"typescript"} className="mt-4">
+                  Typescript
+                </option>
+                <option value={"express"} className="mt-4">
+                  Express
+                </option>
+                <option value={"nodejs"} className="mt-4">
+                  Nodejs
+                </option>
+                <option value="mongodb" className="mt-4">
+                  Mongodb
+                </option>
+              </select>
+
+              {errors.skills?.message && (
+                <p className="text-red-500">{errors.skills?.message}</p>
+              )}
+
+              <div className="flex gap-4 flex-wrap mt-4">
+                {items?.map((e: string, i: number) => {
+                  return (
+                    <div
+                      className=" bg-gray-300 rounded-full p-2 w-fit flex items-center gap-2"
+                      key={i}
+                    >
+                      <p>{e}</p>
+                      <X
+                        className="cursor-pointer"
+                        onClick={() => {
+                          deleteField(e);
+                        }}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
+
+          <Button onClick={next} className="flex mt-4 ml-auto">
+            {currentIndex === 2 ? "Submit" : "Next Step"}
+          </Button>
+        </form>
+
+        <Separator className="my-4" />
+        <div>
+          <Button
+            className="bg-green-700 w-full flex gap-4"
+            onClick={() => signIn("google")}
+          >
+            <p>Signup With Google </p>
+            <FaGoogle />
+          </Button>
+
+          <p className="mt-2 text-center text-gray-400">
+            Existing User ?
+            <Link href="/signin">
+              <span className="cursor-pointer"> Login to Account</span>
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

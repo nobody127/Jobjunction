@@ -2,13 +2,14 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SigninInputType, signinSchema } from "@/schema/auth";
-import { AtSign, Lock, Mail } from "lucide-react";
+import { AtSign, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { FaGoogle } from "react-icons/fa";
+import { useState } from "react";
 
 export default function SigninForm() {
   const {
@@ -19,8 +20,14 @@ export default function SigninForm() {
     resolver: zodResolver(signinSchema),
   });
 
+  const [passwordClick, setPasswordClick] = useState(false);
+
   async function onSubmit(data: any) {
-    const res = await signIn("credentials", data);
+    const res = await signIn("credentials", {
+      username: data.username,
+      password: data.password,
+      callbackUrl: "/jobs",
+    });
     console.log(res);
   }
 
@@ -57,11 +64,18 @@ export default function SigninForm() {
             <div className="border-2 border-black p-2 rounded-md text-black w-full flex gap-2 items-center">
               <Lock className=" bg-white text-gray-400 size-5" />
               <input
-                type="password"
+                type={passwordClick ? "text" : "password"}
                 placeholder="Hello@1"
                 className="w-full outline-none"
                 {...register("password")}
               />
+              <div onClick={() => setPasswordClick((prev) => !prev)}>
+                {passwordClick ? (
+                  <Eye className="cursor-pointer" />
+                ) : (
+                  <EyeOff className="cursor-pointer" />
+                )}
+              </div>
             </div>
             {errors.password?.message && (
               <p className="text-red-500">{errors.password?.message}</p>
