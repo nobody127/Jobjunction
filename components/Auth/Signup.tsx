@@ -352,7 +352,7 @@ export default function SignupForm() {
         <div>
           <Button
             className="bg-green-700 w-full flex gap-4"
-            onClick={() => signIn("google")}
+            onClick={() => signIn("google", { callbackUrl: "/jobs" })}
           >
             <p>Signup With Google </p>
             <FaGoogle />

@@ -76,8 +76,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             });
 
             if (!createdUser) throw new Error("Error while saving the user");
+            //pushing the db id here instead of custom google id
+            user.id = createdUser.id as string;
             return true;
           }
+          //pushing the db id here instead of custom google id
+          user.id = userDetials.id as string;
           return true;
         } catch (error) {
           return false;
@@ -92,7 +96,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user }: any) {
       if (user) {
         token.id = user.id;
-        token.username = user.username;
+        token.username = user.username ?? user.email;
       }
       return token;
     },
@@ -101,11 +105,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.user.id = token.id as string;
       session.user.email = token.email as string;
       session.user.username = token.username as string;
+
       return session;
     },
   },
   pages: {
     signIn: "/signin",
     error: "/error",
+  },
+
+  session: {
+    strategy: "jwt",
   },
 }) satisfies NextConfig;
