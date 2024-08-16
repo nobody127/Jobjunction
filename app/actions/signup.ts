@@ -1,4 +1,5 @@
 "use server";
+import { signIn } from "@/auth";
 import prisma from "@/db";
 import { signupSchema, SignupInputType } from "@/schema/auth";
 import bcrypt from "bcryptjs";
@@ -21,7 +22,8 @@ export async function CreateUser(data: SignupInputType) {
       },
     });
 
-    if (isUserExist) throw new Error("User already exist");
+    if (isUserExist)
+      throw new Error("User with this username / email already exist");
 
     const hashedPassword = await bcrypt.hash(data.password, saltRounds);
 
@@ -55,7 +57,6 @@ export async function CreateUser(data: SignupInputType) {
       newUser,
     };
   } catch (error: any) {
-    console.log(error);
     return {
       status: 400,
       message: error.message,

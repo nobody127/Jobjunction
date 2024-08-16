@@ -8,8 +8,9 @@ import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { FaGoogle } from "react-icons/fa";
+import { FaGoogle, FaSpinner } from "react-icons/fa";
 import { useState } from "react";
+import { TbFidgetSpinner } from "react-icons/tb";
 
 export default function SigninForm() {
   const {
@@ -19,20 +20,26 @@ export default function SigninForm() {
   } = useForm<SigninInputType>({
     resolver: zodResolver(signinSchema),
   });
-
-  const [passwordClick, setPasswordClick] = useState(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const [passwordClick, setPasswordClick] = useState<boolean>(false);
 
   async function onSubmit(data: any) {
-    const res = await signIn("credentials", {
-      username: data.username,
-      password: data.password,
-      callbackUrl: "/jobs",
-    });
-    console.log(res);
+    setSubmitting(true);
+    try {
+      const res = await signIn("credentials", {
+        username: data.username,
+        password: data.password,
+        callbackUrl: "/jobs",
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
-    <div className=" mx-auto mt-6 border-2 border-b-8 border-r-8 border-black  rounded-xl bg-white p-4 md:p-8 w-1/3 ">
+    <div className=" mx-auto mt-12 border-2 border-b-8 border-r-8 border-black  rounded-xl bg-white p-4 md:p-6 w-11/12 md:w-1/2 lg:w-1/3 ">
       <>
         <p className="p-2 bg-white w-fit font-bold font-kanit text-3xl rounded-sm mb-6 border-2 border-b-8 border-r-8 border-black ">
           JJ
@@ -42,7 +49,7 @@ export default function SigninForm() {
       </>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-1 gap-x-4 gap-y-8">
+        <div className="grid grid-cols-1 gap-x-4 gap-y-4 md:gap-y-8">
           <div>
             <label>Username</label>
             <div className="flex gap-2 items-center border-2 border-black p-2 rounded-md text-black w-full">
@@ -82,7 +89,13 @@ export default function SigninForm() {
             )}
           </div>
 
-          <Button type="submit">Submit</Button>
+          <Button type="submit" disabled={submitting}>
+            {submitting ? (
+              <TbFidgetSpinner className="animate-spin text-2xl " />
+            ) : (
+              <p>Submit</p>
+            )}
+          </Button>
         </div>
       </form>
 

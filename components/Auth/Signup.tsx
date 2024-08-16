@@ -23,6 +23,7 @@ import { CreateUser } from "@/app/actions/signup";
 import Link from "next/link";
 import { FaGoogle, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { toast } from "sonner";
+import { TbFidgetSpinner } from "react-icons/tb";
 
 export default function SignupForm() {
   const [items, setItems] = useState<string[] | undefined>([]);
@@ -38,27 +39,44 @@ export default function SignupForm() {
     resolver: zodResolver(signupSchema),
   });
 
-  const [error, setError] = useState<Boolean>(false);
+  const [error, setError] = useState<{
+    status: boolean;
+    message: string;
+  }>({
+    status: false,
+    message: "",
+  });
   const [success, setSuccess] = useState(false);
   const [passwordClick, setPasswordClick] = useState(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   async function onSubmit(data: any) {
-    const response = await CreateUser(data);
-    if (response.status === 400) {
-      setError(true);
-      setTimeout(() => {
-        setError(false);
-      }, 2000);
-    }
-    if (response.status === 200) {
+    setSubmitting(true);
+    try {
+      const response = await CreateUser(data);
+      if (response.status !== 200) throw new Error(response.message);
       setSuccess(true);
       setTimeout(() => {
         setSuccess(false);
       }, 2000);
       router.push("/signin");
+
+      setCurrentIndex(0);
+    } catch (error: any) {
+      setError({
+        status: true,
+        message: error.message,
+      });
+      setTimeout(() => {
+        setError({
+          status: false,
+          message: "",
+        });
+      }, 2000);
+    } finally {
+      setSubmitting(false);
+      reset();
     }
-    setCurrentIndex(0);
-    reset();
   }
 
   const filedValues = [
@@ -120,12 +138,12 @@ export default function SignupForm() {
           duration: 2000,
         })}
 
-      {error &&
-        toast("Something Went Wrong", {
+      {error.status &&
+        toast(error.message, {
           duration: 2000,
         })}
 
-      <div className=" mx-auto mt-6 border-2 border-b-8 border-r-8 border-black  rounded-xl bg-white p-4 md:p-8 w-1/2 ">
+      <div className=" mx-auto  mt-6 border-2 border-b-8 border-r-8 border-black  rounded-xl bg-white p-4 md:p-6 w-11/12 sm:w-1/2 ">
         <div className="flex gap-2 ">
           {currentIndex > 0 ? (
             <ChevronLeft className="cursor-pointer" onClick={handlePrevious} />
@@ -150,10 +168,10 @@ export default function SignupForm() {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           {currentIndex === 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-8">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-x-4 gap-y-8">
               <div>
                 <label>Username</label>
-                <div className="flex gap-2 items-center border-2 border-black p-2 rounded-md text-black w-full">
+                <div className="flex gap-2 items-center border-2 border-black p-2 rounded-md text-black w-full col-span-2">
                   <AtSign className="bg-white text-gray-400 size-5" />
                   <input
                     type="text"
@@ -343,8 +361,22 @@ export default function SignupForm() {
             ""
           )}
 
-          <Button onClick={next} className="flex mt-4 ml-auto">
-            {currentIndex === 2 ? "Submit" : "Next Step"}
+          <Button
+            onClick={next}
+            className="flex mt-4 ml-auto"
+            disabled={submitting}
+          >
+            {currentIndex === 2 ? (
+              <div>
+                {submitting ? (
+                  <TbFidgetSpinner className="animate-spin text-2xl " />
+                ) : (
+                  <p>Submit</p>
+                )}
+              </div>
+            ) : (
+              "Next Step"
+            )}
           </Button>
         </form>
 

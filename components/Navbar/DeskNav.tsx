@@ -30,7 +30,12 @@ export default function DesktopNav() {
                 className="border-b-8  border-r-8 border-darkBg  bg-white px-2 py-1 rounded-md cursor-pointer hover:-translate-y-1 font-bebas"
               />
             </Link>
-            <button onClick={() => signOut()}>Signout</button>
+            <Button
+              className="border-b-8  border-r-8 border-darkBg  bg-white  rounded-md cursor-pointer hover:-translate-y-1 font-bebas text-black hover:bg-white"
+              onClick={() => signOut()}
+            >
+              SignOut
+            </Button>
           </div>
         ) : (
           <div className="flex gap-16 justify-end items-center">
@@ -49,7 +54,6 @@ export default function DesktopNav() {
             >
               Signup
             </Button>
-            {/* <ModeBtn /> */}
           </div>
         )}
       </div>

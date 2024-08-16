@@ -61,7 +61,6 @@ export default async function RootLayout({
       <body className={inter.className}>
         <AuthProvider session={session}>
           <Background />
-          <Navbar />
           <div className=" overflow-x-hidden ">
             {children}
             <Toaster />
