@@ -1,28 +1,22 @@
-"use client";
 import { useRouter } from "next/navigation";
 import TextComponent from "../TextComp";
-import { useSession } from "next-auth/react";
-import ModeBtn from "./ModeBtn";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
-
 import { Button } from "../ui/button";
+import { signIn, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 export default function DesktopNav() {
   const router = useRouter();
+  const session = useSession();
 
-  const { data, status } = useSession();
-  console.log(data);
-
-  if (status === "loading") {
-    return <div>Loading...</div>;
+  if (session.status === "loading") {
+    return <div>Loading....</div>;
   }
-
   return (
     <div>
       {/* Option section  */}
       <div>
-        {status === "authenticated" ? (
+        {session.status === "authenticated" ? (
           <div className="flex gap-16 justify-end items-center">
             <Link href="/jobs">
               <TextComponent
@@ -36,22 +30,19 @@ export default function DesktopNav() {
                 className="border-b-8  border-r-8 border-darkBg  bg-white px-2 py-1 rounded-md cursor-pointer hover:-translate-y-1 font-bebas"
               />
             </Link>
-            <button onClick={() => signOut()}>Signout</button>
-
-            {/* <img
-              src={data.user?.image || ""}
-              className="w-8 h-8 rounded-full cursor-pointer"
-            />
-            <ModeBtn /> */}
+            <Button
+              className="border-b-8  border-r-8 border-darkBg  bg-white  rounded-md cursor-pointer hover:-translate-y-1 font-bebas text-black hover:bg-white"
+              onClick={() => signOut()}
+            >
+              SignOut
+            </Button>
           </div>
         ) : (
           <div className="flex gap-16 justify-end items-center">
             <Button
               className="border-b-8  border-r-8 border-darkBg  bg-white  rounded-md cursor-pointer hover:-translate-y-1 font-bebas text-black hover:bg-white"
               size={"lg"}
-              onClick={() => {
-                router.push("/signin");
-              }}
+              onClick={() => signIn()}
             >
               Login
             </Button>
@@ -63,7 +54,6 @@ export default function DesktopNav() {
             >
               Signup
             </Button>
-            {/* <ModeBtn /> */}
           </div>
         )}
       </div>
