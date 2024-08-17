@@ -48,7 +48,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             email: isUserExist.email,
           };
         } catch (error: any) {
-          return null;
+          throw new Error(error.message);
         }
       },
     }),

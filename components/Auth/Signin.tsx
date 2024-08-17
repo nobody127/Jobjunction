@@ -11,30 +11,41 @@ import Link from "next/link";
 import { FaGoogle, FaSpinner } from "react-icons/fa";
 import { useState } from "react";
 import { TbFidgetSpinner } from "react-icons/tb";
+import { toast } from "sonner";
 
 export default function SigninForm() {
   const {
     register,
     formState: { errors },
+    reset,
     handleSubmit,
   } = useForm<SigninInputType>({
     resolver: zodResolver(signinSchema),
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [passwordClick, setPasswordClick] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function onSubmit(data: any) {
     setSubmitting(true);
+    setError(null);
     try {
       const res = await signIn("credentials", {
         username: data.username,
         password: data.password,
-        callbackUrl: "/jobs",
+        redirect: false,
       });
-    } catch (error) {
-      console.log(error);
+
+      if (res?.error) {
+        setError(res.error);
+      } else {
+        window.location.href = res?.url || "/jobs";
+      }
+    } catch (error: any) {
+      setError(error);
     } finally {
       setSubmitting(false);
+      reset();
     }
   }
 
@@ -116,6 +127,8 @@ export default function SigninForm() {
           </Link>
         </p>
       </div>
+
+      {error && toast(error)}
     </div>
   );
 }
