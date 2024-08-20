@@ -1,44 +1,48 @@
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
-enum Provider{
+model User {
+  id            String   @id @default(uuid())
+  username      String   @unique
+  bio           String?
+  password      String?
+  avatar        String?
+  email         String   @unique
+  instagram_url String?
+  linkedin_url  String?
+  twitter_url   String?
+  skills        String[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  provider      Provider @default(google)
+  provider_id   String?
+  posts         Post[]
+}
+
+model Post {
+  id               Int    @id @default(autoincrement())
+  authorId         String
+  apply_link       String
+  company          String
+  experience_level String
+  job_type         String
+  location         String
+  position         String
+  role_description String
+  role_name        String
+  salary_max       Int
+  salary_min       Int
+  author           User   @relation(fields: [authorId], references: [id],onDelete: Cascade)
+}
+
+enum Provider {
   google
   credentials
 }
-
-model User{
-  id String @id @default(uuid())
-  username String @unique
-  email String @unique
-  password String? 
-  avatar String?
-  bio String? 
-  instagram_url String?
-  linkedin_url String?
-  twitter_url String?
-  skills String[]
-  provider Provider @default(google)
-  provider_id String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-   posts Post[]  
-}
-
-
-model Post{
-  id Int @id @default(autoincrement())
-  title String
-  description String 
-  tags String[]
-  authorId String
-  author User @relation(fields: [authorId],references: [id])
-}
-

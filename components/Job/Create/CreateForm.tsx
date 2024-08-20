@@ -1,9 +1,11 @@
 "use client";
 
+import { CreateJob } from "@/app/actions/jobs";
 import { Button } from "@/components/ui/button";
 import { createJobSchema, createJobSchemaType } from "@/schema/jobs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Briefcase, Building, IndianRupee, Link } from "lucide-react";
+import { AtSign, Briefcase, Building, IndianRupee, Link } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { PiOfficeChair } from "react-icons/pi";
 
@@ -12,12 +14,19 @@ export default function CreateForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<createJobSchemaType>({
     resolver: zodResolver(createJobSchema),
   });
 
+  const session: any = useSession();
+
   async function onSubmit(data: any) {
-    console.log(data);
+    try {
+      const response = await CreateJob(data);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <div className="p-12 bg-white">
@@ -78,9 +87,9 @@ export default function CreateForm() {
             >
               Role Description
             </label>
-            <div className="flex gap-2 items-center bg-gray-200 px-4 py-2 rounded-md w-full outline-none font-kanit mt-2">
+            <div className="flex gap-2 items-center bg-gray-200 px-4 py-2 rounded-md w-full outline-none font-kanit mt-2 ">
               <textarea
-                className="bg-transparent outline-none w-full "
+                className="bg-transparent outline-none w-full resize-none no-scrollbar "
                 placeholder="Write Description.."
                 {...register("role_description")}
                 id="role_description"
@@ -207,7 +216,7 @@ export default function CreateForm() {
                 type="number"
                 className="bg-transparent outline-none w-full "
                 placeholder="5000"
-                {...(register("salary_min"), { valueAsNumber: true })}
+                {...register("salary_min", { valueAsNumber: true })}
                 id="salary_min"
               />
             </div>
@@ -231,7 +240,7 @@ export default function CreateForm() {
                 type="number"
                 className="bg-transparent outline-none w-full "
                 placeholder="5,00,000"
-                {...(register("salary_max"), { valueAsNumber: true })}
+                {...register("salary_max", { valueAsNumber: true })}
                 id="salary_max"
               />
             </div>
@@ -254,7 +263,7 @@ export default function CreateForm() {
               <input
                 className="bg-transparent outline-none w-full "
                 placeholder="https://job-junction-olive.vercel.app"
-                {...register("company")}
+                {...register("apply_link")}
                 id="apply_link"
               />
             </div>

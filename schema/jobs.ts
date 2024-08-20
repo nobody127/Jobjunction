@@ -47,6 +47,8 @@ export const createJobSchema = z.object({
   apply_link: z
     .string({ message: "Must provide apply link" })
     .url({ message: "Invalid url" }),
+
+  author: z.string({ message: "Author is required" }).optional(),
 });
 
 export type createJobSchemaType = z.infer<typeof createJobSchema>;
