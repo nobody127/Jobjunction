@@ -68,6 +68,14 @@
   }
 }
 
+.filter-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.filter-scrollbar::-webkit-scrollbar-track {
+  background: rgb(230, 230, 230);
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

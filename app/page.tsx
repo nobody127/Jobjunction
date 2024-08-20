@@ -4,6 +4,7 @@ import LandingPart3 from "@/components/LandingPage/Landing3";
 import LandingPart4 from "@/components/LandingPage/Landing4";
 import Navbar from "@/components/Navbar/Navbar";
 import Background from "@/components/Bg";
+import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <div>
@@ -13,6 +14,7 @@ export default function Home() {
       <FieldsMarqueeComponent />
       <LandingPart3 />
       <LandingPart4 />
+      <Footer />
     </div>
   );
 }

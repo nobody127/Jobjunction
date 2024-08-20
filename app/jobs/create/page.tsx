@@ -1,11 +1,5 @@
-export default function CreateJob() {
-  return (
-    <div>
-      <p>Post Opportunity</p>
+import CreateForm from "@/components/Job/Create/CreateForm";
 
-      <form>
-        <input />
-      </form>
-    </div>
-  );
+export default function CreateJob() {
+  return <CreateForm />;
 }

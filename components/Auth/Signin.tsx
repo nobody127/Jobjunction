@@ -24,7 +24,7 @@ export default function SigninForm() {
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [passwordClick, setPasswordClick] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<boolean | null>(null);
 
   async function onSubmit(data: any) {
     setSubmitting(true);
@@ -37,12 +37,18 @@ export default function SigninForm() {
       });
 
       if (res?.error) {
-        setError(res.error);
+        setError(true);
+        setTimeout(() => {
+          setError(false);
+        }, 2000);
       } else {
         window.location.href = res?.url || "/jobs";
       }
     } catch (error: any) {
-      setError(error);
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 2000);
     } finally {
       setSubmitting(false);
       reset();
@@ -51,6 +57,8 @@ export default function SigninForm() {
 
   return (
     <div className=" mx-auto mt-12 border-2 border-b-8 border-r-8 border-black  rounded-xl bg-white p-4 md:p-6 w-11/12 md:w-1/2 lg:w-1/3 ">
+      {error && toast("Username / Password mismatched")}
+
       <>
         <p className="p-2 bg-white w-fit font-bold font-kanit text-3xl rounded-sm mb-6 border-2 border-b-8 border-r-8 border-black ">
           JJ
@@ -127,8 +135,6 @@ export default function SigninForm() {
           </Link>
         </p>
       </div>
-
-      {error && toast(error)}
     </div>
   );
 }

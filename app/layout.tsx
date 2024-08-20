@@ -62,7 +62,6 @@ export default async function RootLayout({
             {children}
             <Toaster />
           </div>
-          <Footer />
         </AuthProvider>
       </body>
     </html>

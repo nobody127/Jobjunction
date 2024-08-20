@@ -5,7 +5,7 @@ import { TbHandClick } from "react-icons/tb";
 
 export default function JobCard() {
   return (
-    <div className="flex flex-col gap-8 p-6 shadow-lg mx-auto w-1/2 bg-white rounded-md border-2 mt-4">
+    <div className="flex flex-col gap-8 p-6 shadow-lg mx-auto w-11/12 lg:w-3/4 bg-white rounded-md border-2">
       {/* first section  */}
 
       <div className="flex justify-between">
