@@ -4,7 +4,7 @@ import { CreateJob } from "@/app/actions/jobs";
 import { Button } from "@/components/ui/button";
 import { createJobSchema, createJobSchemaType } from "@/schema/jobs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AtSign, Briefcase, Building, IndianRupee, Link } from "lucide-react";
+import { Briefcase, Building, IndianRupee, Link } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import { FaSpinner } from "react-icons/fa";
 import { PiOfficeChair } from "react-icons/pi";
 import { toast } from "sonner";
-
+import { IoChevronBackCircleOutline } from "react-icons/io5";
 export default function CreateForm() {
   const {
     register,
@@ -68,15 +68,20 @@ export default function CreateForm() {
   }
 
   return (
-    <div className="p-12 bg-white">
+    <div className="p-4 md:p-12 bg-white">
       {success ? toast("Successfully created") : ""}
 
       {error.status ? toast(error.message) : ""}
 
+      <IoChevronBackCircleOutline
+        className="mb-4 size-6"
+        onClick={() => router.push("/jobs")}
+      />
+
       <p className="text-2xl font-Heebo font-bold">List a new Job</p>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-2 gap-8  mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-2  gap-8  mt-8">
           <div>
             <label
               className="text-black font-bold font-bebas"
@@ -123,7 +128,7 @@ export default function CreateForm() {
             )}
           </div>
 
-          <div className="col-span-2">
+          <div className="md:col-span-2">
             <label
               className="text-black font-bold font-bebas"
               htmlFor="role_description"
@@ -319,7 +324,7 @@ export default function CreateForm() {
         </div>
 
         <div className="flex justify-end">
-          <Button className={`border-2 mt-4`} disabled={loading}>
+          <Button className={`border-2 mt-4 bg-black`} disabled={loading}>
             {loading ? <FaSpinner className="animate-spin" /> : "Submit"}
           </Button>
         </div>

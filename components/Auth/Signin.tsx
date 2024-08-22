@@ -2,13 +2,13 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SigninInputType, signinSchema } from "@/schema/auth";
-import { AtSign, Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { AtSign, Eye, EyeOff, Lock } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { FaGoogle, FaSpinner } from "react-icons/fa";
+import { FaGoogle } from "react-icons/fa";
 import { useState } from "react";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { toast } from "sonner";

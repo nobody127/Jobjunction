@@ -19,12 +19,7 @@ const items = [
 ] as const;
 
 export default function FilterSideBar() {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
+  const { register, watch } = useForm();
 
   const watchExperience = watch("entry");
 
@@ -37,7 +32,7 @@ export default function FilterSideBar() {
         <p className="font-bold">Experience Level</p>
         {items.map((item: any) => {
           return (
-            <div className="flex gap-2 mt-4">
+            <div className="flex gap-2 mt-4" key={item.id}>
               <input type="checkbox" value={item.id} {...register(item.id)} />
               <label>{item.label}</label>
             </div>
@@ -49,7 +44,7 @@ export default function FilterSideBar() {
         <p className="font-bold">Job Type</p>
         {items.map((item: any) => {
           return (
-            <div className="flex gap-2 mt-4">
+            <div className="flex gap-2 mt-4" key={item.id}>
               <input
                 type="checkbox"
                 value={item.id}
@@ -66,7 +61,7 @@ export default function FilterSideBar() {
         <p className="font-bold">Location Wise</p>
         {items.map((item: any) => {
           return (
-            <div className="flex gap-2 mt-4">
+            <div className="flex gap-2 mt-4" key={item.id}>
               <input
                 type="checkbox"
                 value={item.id}
