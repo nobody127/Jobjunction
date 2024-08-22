@@ -2,23 +2,36 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BadgeIndianRupee, Bookmark, BriefcaseBusiness } from "lucide-react";
 import { Button } from "../ui/button";
 import { TbHandClick } from "react-icons/tb";
+import Link from "next/link";
 
-export default function JobCard() {
+export default function JobCard({
+  authorUrl,
+  position,
+  company,
+  description,
+  jobType,
+  location,
+  roleName,
+  salaryMin,
+  salaryMax,
+  experienceLevel,
+  applyLink,
+}: any) {
   return (
-    <div className="flex flex-col gap-8 p-6 shadow-lg mx-auto w-11/12 lg:w-3/4 bg-white rounded-md border-2">
+    <div className="flex flex-col gap-8 p-6 shadow-lg mx-auto w-11/12  lg:w-3/4 bg-white rounded-md border-2">
       {/* first section  */}
 
       <div className="flex justify-between">
         <Avatar>
-          <AvatarImage src="Images/avatar.png" />
+          <AvatarImage src={authorUrl ? authorUrl : "Images/avatar.png"} />
           <AvatarFallback>CO</AvatarFallback>
         </Avatar>
 
         <div>
           <p className="text-radio text-2xl text-black tracking-wide font-bold">
-            Senior Rust Developer
+            {position}
           </p>
-          <p className="text-gray-400 text-sm">Microsoft India</p>
+          <p className="text-gray-400 text-sm">{company}</p>
         </div>
 
         <Bookmark className="cursor-pointer" />
@@ -27,23 +40,17 @@ export default function JobCard() {
       {/* second section  */}
 
       <div>
-        <p className="text-gray-500">
-          A job description is a document that explains the responsibilities,
-          duties, and tasks of a job role. It also details how the work is to be
-          completed, how often, and why it's important to the organization's
-          goals and mission. Job descriptions are often used in job postings on
-          websites like Indeed and Monster.
-        </p>
+        <p className="text-gray-500 break-all">{description.slice(0, 450)}</p>
 
         <div className="flex w-fit gap-4 mt-6">
           <Button className="text-black bg-gray-300 hover:bg-gray-400 hover:text-white">
-            Remote
+            {location}
           </Button>
           <Button className="text-black bg-gray-300 hover:bg-gray-400 hover:text-white">
-            Frontend Developer
+            {roleName}
           </Button>
           <Button className="text-black bg-gray-300 hover:bg-gray-400 hover:text-white">
-            Fulltime
+            {jobType}
           </Button>
         </div>
       </div>
@@ -55,18 +62,21 @@ export default function JobCard() {
       <div className="flex justify-between">
         <div className="flex gap-2">
           <BadgeIndianRupee />
-          <p>15k-25k/month</p>
+          <p>
+            {salaryMin}-<span>{salaryMax}</span>/month
+          </p>
         </div>
 
         <div className="flex gap-2">
           <BriefcaseBusiness />
-          <p>Freshers</p>
+          <p>{experienceLevel}(y)</p>
         </div>
-
-        <Button className="bg-white text-black border-2 border-b-8 border-r-8 border-black hover:bg-white flex gap-2">
-          <p>Apply Now</p>
-          <TbHandClick className="size-4" />
-        </Button>
+        <Link href={applyLink}>
+          <Button className="bg-white text-black border-2 border-b-8 border-r-8 border-black hover:bg-white flex gap-2">
+            <p>Apply Now</p>
+            <TbHandClick className="size-4" />
+          </Button>
+        </Link>
       </div>
     </div>
   );

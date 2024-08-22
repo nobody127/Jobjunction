@@ -32,7 +32,7 @@ export default function FilterSideBar() {
     if (watchExperience) console.log("hi", watchExperience);
   }, [watchExperience]);
   return (
-    <div className="hidden  lg:flex flex-col gap-4 border-r-2 min-w-[300px] bg-white rounded-md max-h-screen overflow-y-scroll filter-scrollbar">
+    <div className="hidden lg:flex flex-col gap-4 border-r-2 min-w-[300px] w-1/5 bg-white rounded-md max-h-screen overflow-y-scroll filter-scrollbar">
       <div className="py-8 px-6">
         <p className="font-bold">Experience Level</p>
         {items.map((item: any) => {

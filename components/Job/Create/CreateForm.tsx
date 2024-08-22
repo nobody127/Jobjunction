@@ -6,30 +6,73 @@ import { createJobSchema, createJobSchemaType } from "@/schema/jobs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AtSign, Briefcase, Building, IndianRupee, Link } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { FaSpinner } from "react-icons/fa";
 import { PiOfficeChair } from "react-icons/pi";
+import { toast } from "sonner";
 
 export default function CreateForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<createJobSchemaType>({
     resolver: zodResolver(createJobSchema),
   });
 
   const session: any = useSession();
+  const router = useRouter();
+
+  const [success, setSuccess] = useState<boolean>(false);
+  const [error, setError] = useState<{
+    status: boolean;
+    message: string;
+  }>({
+    status: false,
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
 
   async function onSubmit(data: any) {
+    setLoading(true);
     try {
       const response = await CreateJob(data);
-      console.log(response);
+
+      if (response.status !== 200) throw new Error(response.message);
+
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+      }, 1500);
+
+      router.push("/jobs");
     } catch (error) {
-      console.log(error);
+      setError({
+        status: true,
+        message: (error as Error).message,
+      });
+
+      setTimeout(() => {
+        setError({
+          status: false,
+          message: "",
+        });
+      }, 1500);
+    } finally {
+      reset();
+      setLoading(false);
     }
   }
+
   return (
     <div className="p-12 bg-white">
+      {success ? toast("Successfully created") : ""}
+
+      {error.status ? toast(error.message) : ""}
+
       <p className="text-2xl font-Heebo font-bold">List a new Job</p>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -276,7 +319,9 @@ export default function CreateForm() {
         </div>
 
         <div className="flex justify-end">
-          <Button className="border-2 mt-4">Submit</Button>
+          <Button className={`border-2 mt-4`} disabled={loading}>
+            {loading ? <FaSpinner className="animate-spin" /> : "Submit"}
+          </Button>
         </div>
       </form>
     </div>

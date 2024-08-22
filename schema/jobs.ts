@@ -20,7 +20,7 @@ export const createJobSchema = z.object({
     .string({ message: "Company name is required" })
     .min(2, { message: "Extend it little" }),
 
-  role_description: z.string({ message: "Description is required" }).min(20, {
+  role_description: z.string({ message: "Description is required" }).min(500, {
     message: "Description need to be long",
   }),
 
