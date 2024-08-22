@@ -1,5 +1,5 @@
 "use server";
-import { signIn } from "@/auth";
+
 import prisma from "@/db";
 import { signupSchema, SignupInputType } from "@/schema/auth";
 import bcrypt from "bcryptjs";

@@ -2,44 +2,63 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SigninInputType, signinSchema } from "@/schema/auth";
-import { AtSign, Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { AtSign, Eye, EyeOff, Lock } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { FaGoogle, FaSpinner } from "react-icons/fa";
+import { FaGoogle } from "react-icons/fa";
 import { useState } from "react";
 import { TbFidgetSpinner } from "react-icons/tb";
+import { toast } from "sonner";
 
 export default function SigninForm() {
   const {
     register,
     formState: { errors },
+    reset,
     handleSubmit,
   } = useForm<SigninInputType>({
     resolver: zodResolver(signinSchema),
   });
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [passwordClick, setPasswordClick] = useState<boolean>(false);
+  const [error, setError] = useState<boolean | null>(null);
 
   async function onSubmit(data: any) {
     setSubmitting(true);
+    setError(null);
     try {
       const res = await signIn("credentials", {
         username: data.username,
         password: data.password,
-        callbackUrl: "/jobs",
+        redirect: false,
       });
-    } catch (error) {
-      console.log(error);
+
+      if (res?.error) {
+        setError(true);
+        setTimeout(() => {
+          setError(false);
+        }, 2000);
+      } else {
+        window.location.href = res?.url || "/jobs";
+      }
+    } catch (error: any) {
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 2000);
     } finally {
       setSubmitting(false);
+      reset();
     }
   }
 
   return (
     <div className=" mx-auto mt-12 border-2 border-b-8 border-r-8 border-black  rounded-xl bg-white p-4 md:p-6 w-11/12 md:w-1/2 lg:w-1/3 ">
+      {error && toast("Username / Password mismatched")}
+
       <>
         <p className="p-2 bg-white w-fit font-bold font-kanit text-3xl rounded-sm mb-6 border-2 border-b-8 border-r-8 border-black ">
           JJ

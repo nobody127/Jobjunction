@@ -6,6 +6,7 @@ import TextComponent from "../TextComp";
 import { Button } from "../ui/button";
 import { ArrowBigRightDash, Briefcase } from "lucide-react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function LandingPart1() {
   return (
@@ -25,13 +26,14 @@ export default function LandingPart1() {
             delay: 1,
           }}
         >
-          <Button
-            variant={"outline"}
-            className="border-b-8  border-r-8 border-darkBg  bg-white  rounded-md cursor-pointer hover:-translate-y-1 font-bebas text-black hover:bg-white w-full"
+          <Link
+            href={"/jobs"}
+            className="flex gap-2 text-md  w-full   bg-white  rounded-md border-2 border-b-8  border-r-8 border-darkBg cursor-pointer hover:-translate-y-1 font-bebas text-black p-2  hover:bg-white"
           >
-            <p className="text-md"> Get Job Free</p>
+            <p>Apply Now</p>
+
             <ArrowBigRightDash className="size-6" />
-          </Button>
+          </Link>
         </motion.div>
 
         <motion.div
@@ -43,13 +45,14 @@ export default function LandingPart1() {
             delay: 1,
           }}
         >
-          <Button
-            variant={"outline"}
-            className="border-b-8  border-r-8 border-darkBg  bg-white  rounded-md cursor-pointer hover:-translate-y-1 font-bebas text-black hover:bg-white w-full"
+          <Link
+            href={"/jobs/create"}
+            className="flex gap-2 text-md  w-full   bg-white  rounded-md border-2 border-b-8  border-r-8 border-darkBg cursor-pointer hover:-translate-y-1 font-bebas text-black p-2  hover:bg-white"
           >
-            <p className="text-md"> Post Job</p>
+            <p>Post Job</p>
+
             <Briefcase className="size-6 ml-2" />
-          </Button>
+          </Link>
         </motion.div>
       </div>
     </div>

@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar/Navbar";
 import Head from "next/head";
-import Background from "@/components/Bg";
 import Footer from "@/components/Footer";
 import AuthProvider from "@/provider";
 import { auth } from "@/auth";
@@ -60,12 +58,10 @@ export default async function RootLayout({
       </Head>
       <body className={inter.className}>
         <AuthProvider session={session}>
-          <Background />
           <div className=" overflow-x-hidden ">
             {children}
             <Toaster />
           </div>
-          <Footer />
         </AuthProvider>
       </body>
     </html>

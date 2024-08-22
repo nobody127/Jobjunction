@@ -7,7 +7,7 @@ import MobileNav from "./MobNav";
 
 export default function Navbar() {
   return (
-    <div className="p-2 sm:p-4  flex justify-between items-center w-full bg-white dark:bg-darkBg ">
+    <div className="p-2 sm:p-4 sm:px-12  flex justify-between items-center w-full bg-white dark:bg-darkBg ">
       <div>
         <Link href={"/"}>
           <TextComponent
@@ -17,7 +17,7 @@ export default function Navbar() {
         </Link>
       </div>
 
-      <div className="hidden sm:block w-3/4 ">
+      <div className="hidden sm:block ">
         <DesktopNav />
       </div>
 
