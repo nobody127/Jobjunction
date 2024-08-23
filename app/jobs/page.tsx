@@ -1,11 +1,12 @@
 "use client";
 
-import FilterSideBar from "@/components/Job/filterCard";
 import JobCard from "@/components/Job/jobCard";
 import { useEffect, useState } from "react";
 import { GetAllPost } from "../actions/jobs";
 import { toast } from "sonner";
 import { GetAllPostResponseType, JobLisitingType } from "@/types/types";
+import MobileFilterCard from "@/components/Job/mobFilterCard";
+import DesktopFilterCard from "@/components/Job/deskFilterCard";
 
 export default function AllJobs() {
   const [allJobs, setAllJobs] = useState<JobLisitingType[]>([]);
@@ -55,12 +56,14 @@ export default function AllJobs() {
   }
 
   return (
-    <div className="flex gap-8">
+    <div className="lg:flex lg:gap-8">
       {error.status ? toast(error.message) : ""}
 
-      <FilterSideBar />
+      <DesktopFilterCard />
 
-      <div className="flex flex-col gap-8 max-h-screen overflow-y-scroll no-scrollbar mt-8 lg:w-4/5 py-6">
+      <MobileFilterCard />
+
+      <div className="flex flex-col gap-8 max-h-screen overflow-y-scroll no-scrollbar lg:mt-8 lg:w-4/5 py-6">
         {allJobs.map((e: JobLisitingType) => {
           return (
             <JobCard
