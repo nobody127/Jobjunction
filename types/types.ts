@@ -21,7 +21,7 @@ export type GetAllPostResponseType = {
 };
 
 export type JobLisitingType = {
-  id: number | undefined;
+  id: string;
   apply_link: string;
   company: string;
   experience_level: string;

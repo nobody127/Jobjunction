@@ -5,6 +5,17 @@ import { TbHandClick } from "react-icons/tb";
 import Link from "next/link";
 import { JobLisitingType } from "@/types/types";
 
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { HiExternalLink } from "react-icons/hi";
+import { CheckForBookmark, HandleBookmakrClick } from "@/app/actions/bookmark";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+
 export default function JobCard({
   id,
   author,
@@ -19,17 +30,75 @@ export default function JobCard({
   experience_level,
   apply_link,
 }: JobLisitingType) {
+  const session: any = useSession();
+  const [bookmarked, setBookmarked] = useState<boolean>(false);
+  const [showBookmarkToast, setShowBookmarkToast] = useState({
+    status: false,
+    message: "",
+  });
+
+  async function handleBookmarkClick() {
+    try {
+      const response = await HandleBookmakrClick(session.data?.user?.id, id);
+      if (response.status !== 200) throw new Error(response.message);
+      setBookmarked(true);
+      setShowBookmarkToast({
+        status: true,
+        message: response.message,
+      });
+    } catch (error) {
+      setBookmarked(false);
+      setShowBookmarkToast({
+        status: true,
+        message: (error as Error).message,
+      });
+    } finally {
+      setTimeout(() => {
+        setShowBookmarkToast({
+          status: false,
+          message: "",
+        });
+      }, 1000);
+    }
+  }
+
+  useEffect(() => {
+    const checkForBookmarkedPost = async () => {
+      try {
+        const response = await CheckForBookmark(session.data?.user?.id, id);
+        if (response.status !== 200) throw new Error(response.message);
+        setBookmarked(true);
+      } catch (error) {
+        setBookmarked(false);
+      }
+    };
+
+    checkForBookmarkedPost();
+  }, []);
   return (
     <div className="flex flex-col gap-8 p-4 md:p-6 shadow-lg mx-auto w-11/12  lg:w-3/4 bg-white rounded-md border-2">
+      {showBookmarkToast.status && toast(showBookmarkToast.message)}
+
       {/* first section  */}
 
       <div className="flex justify-between">
-        <Avatar>
-          <AvatarImage
-            src={author.avatar ? author.avatar : "Images/avatar.png"}
-          />
-          <AvatarFallback>CO</AvatarFallback>
-        </Avatar>
+        <HoverCard>
+          <HoverCardTrigger>
+            <Avatar className="cursor-pointer">
+              <AvatarImage
+                src={author.avatar ? author.avatar : "Images/avatar.png"}
+              />
+              <AvatarFallback>CO</AvatarFallback>
+            </Avatar>
+          </HoverCardTrigger>
+          <HoverCardContent className="flex gap-2 items-center">
+            <p>{author.username}</p>
+            <Link href={`/user/profile/${author.id}`}>
+              {" "}
+              <HiExternalLink />
+            </Link>
+          </HoverCardContent>
+        </HoverCard>
 
         <div>
           <p className="text-radio text-md md:text-2xl text-black tracking-wide font-bold">
@@ -38,14 +107,17 @@ export default function JobCard({
           <p className="text-gray-400 text-sm">{company}</p>
         </div>
 
-        <Bookmark className="cursor-pointer" />
+        <Bookmark
+          className={`cursor-pointer ${bookmarked ? "fill-blue-950" : ""}`}
+          onClick={() => handleBookmarkClick()}
+        />
       </div>
 
       {/* second section  */}
 
       <div>
         <p className="text-gray-500  break-words  ">
-          {role_description.slice(0, 450)}
+          {role_description.slice(0, 250)}
         </p>
 
         <div className="flex w-fit gap-4 mt-6 flex-wrap">
