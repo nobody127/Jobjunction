@@ -2,6 +2,7 @@
 
 import { ThemeStoreType } from "@/types/types";
 import { create } from "zustand";
+import { atom } from "recoil";
 
 export const useThemeStore = create<ThemeStoreType>((set) => ({
   theme: localStorage.getItem("job-theme") || "light",
@@ -11,3 +12,8 @@ export const useThemeStore = create<ThemeStoreType>((set) => ({
     }));
   },
 }));
+
+export const allJobListings = atom<any>({
+  key: "allJobListing",
+  default: [],
+});

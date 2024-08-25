@@ -7,9 +7,11 @@ import { toast } from "sonner";
 import { GetAllPostResponseType, JobLisitingType } from "@/types/types";
 import MobileFilterCard from "@/components/Job/mobFilterCard";
 import DesktopFilterCard from "@/components/Job/deskFilterCard";
+import { useRecoilState } from "recoil";
+import { allJobListings } from "@/store/store";
 
 export default function AllJobs() {
-  const [allJobs, setAllJobs] = useState<JobLisitingType[]>([]);
+  const [allJobs, setAllJobs] = useRecoilState(allJobListings);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<{
     status: boolean;

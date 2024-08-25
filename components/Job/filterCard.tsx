@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { allJobListings } from "@/store/store";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRecoilState } from "recoil";
 
 const experienceValues = ["Fresher", "0-1", "1+", "3+", "5+"];
 const jobTypeValues = ["Fulltime", "Internship", "Contract", "Freelance"];
@@ -9,10 +11,53 @@ const locationTypeValue = ["Remote", "Onsite", "Hybrid"];
 
 export default function FilterSideBar() {
   const { register, watch } = useForm();
+  const [allJobs, setAllJobs] = useRecoilState(allJobListings);
+  const [filter, setFilter] = useState<{
+    experience: any[];
+    job: any[];
+    location: any[];
+  }>({
+    experience: [],
+    job: [],
+    location: [],
+  });
 
-  const watchExperience = watch(experienceValues);
-  const watchJob = watch(jobTypeValues);
-  const watchLocation = watch(locationTypeValue);
+  const selectedExperience = watch(experienceValues);
+  const selectedJob = watch(jobTypeValues);
+  const selectedLocation = watch(locationTypeValue);
+
+  useEffect(() => {
+    const newFilter = {
+      experience: selectedExperience.filter((e) => (e ? e : null)),
+      job: selectedJob.filter((e) => (e ? e : null)),
+      location: selectedLocation.filter((e) => (e ? e : null)),
+    };
+    if (JSON.stringify(newFilter) !== JSON.stringify(filter))
+      setFilter(newFilter);
+  }, [selectedExperience, selectedJob, selectedLocation]);
+
+  useEffect(() => {
+    const callBackend = async () => {
+      try {
+        const response = await fetch(`/api/jobs`, {
+          method: "POST",
+          body: JSON.stringify(filter),
+        });
+        const finalData = await response.json();
+        setAllJobs(finalData.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (
+      filter.experience.length <= 0 &&
+      filter.job.length <= 0 &&
+      filter.location.length <= 0
+    )
+      return;
+    callBackend();
+  }, [filter]);
 
   return (
     <div>
