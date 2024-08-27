@@ -13,11 +13,12 @@ import { FaSpinner } from "react-icons/fa";
 import { PiOfficeChair } from "react-icons/pi";
 import { toast } from "sonner";
 import { IoChevronBackCircleOutline } from "react-icons/io5";
+import Tiptap from "@/components/TipTap";
 export default function CreateForm() {
   const {
     register,
     handleSubmit,
-    reset,
+    setValue,
     formState: { errors },
   } = useForm<createJobSchemaType>({
     resolver: zodResolver(createJobSchema),
@@ -37,34 +38,35 @@ export default function CreateForm() {
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(data: any) {
-    setLoading(true);
-    try {
-      const response = await CreateJob(data);
+    console.log(data);
+    // setLoading(true);
+    // try {
+    //   const response = await CreateJob(data);
 
-      if (response.status !== 200) throw new Error(response.message);
+    //   if (response.status !== 200) throw new Error(response.message);
 
-      setSuccess(true);
-      setTimeout(() => {
-        setSuccess(false);
-      }, 1500);
+    //   setSuccess(true);
+    //   setTimeout(() => {
+    //     setSuccess(false);
+    //   }, 1500);
 
-      router.push("/jobs");
-    } catch (error) {
-      setError({
-        status: true,
-        message: (error as Error).message,
-      });
+    //   router.push("/jobs");
+    // } catch (error) {
+    //   setError({
+    //     status: true,
+    //     message: (error as Error).message,
+    //   });
 
-      setTimeout(() => {
-        setError({
-          status: false,
-          message: "",
-        });
-      }, 1500);
-    } finally {
-      reset();
-      setLoading(false);
-    }
+    //   setTimeout(() => {
+    //     setError({
+    //       status: false,
+    //       message: "",
+    //     });
+    //   }, 1500);
+    // } finally {
+    //   reset();
+    //   setLoading(false);
+    // }
   }
 
   return (
@@ -135,14 +137,14 @@ export default function CreateForm() {
             >
               Role Description
             </label>
-            <div className="flex gap-2 items-center bg-gray-200 px-4 py-2 rounded-md w-full outline-none font-kanit mt-2 ">
-              <textarea
-                className="bg-transparent outline-none w-full resize-none no-scrollbar "
-                placeholder="Write Description.."
-                {...register("role_description")}
-                id="role_description"
-              />
-            </div>
+
+            <Tiptap
+              className="bg-gray-200 px-4 py-2 rounded-md w-full font-kanit mt-2 min-h-80 max-h-80 overflow-y-scroll overflow-x-hidden"
+              register={register}
+              name="role_description"
+              setValue={setValue}
+            />
+
             {errors.role_description?.message && (
               <p className="mt-2 font-bold text-red-500">
                 {errors.role_description?.message}
@@ -324,7 +326,11 @@ export default function CreateForm() {
         </div>
 
         <div className="flex justify-end">
-          <Button className={`border-2 mt-4 bg-black`} disabled={loading}>
+          <Button
+            type="submit"
+            className={`border-2 mt-4 bg-black`}
+            disabled={loading}
+          >
             {loading ? <FaSpinner className="animate-spin" /> : "Submit"}
           </Button>
         </div>

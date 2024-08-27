@@ -3,14 +3,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
-    const body = await req.json();
+    const { experience, job, location } = await req.json();
 
     const response = await prisma.post.findMany({
       where: {
-        OR: [
-          { experience_level: { in: body.experience } },
-          { job_type: { in: body.job } },
-          { location: { in: body.location } },
+        AND: [
+          experience.length > 0 ? { experience_level: { in: experience } } : {},
+          job.length > 0 ? { job_type: { in: job } } : {},
+          location.length > 0 ? { location: { in: location } } : {},
         ],
       },
       select: {
@@ -34,6 +34,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
         },
       },
     });
+
+    if (response.length === 0) throw new Error("No Posts Found");
 
     return NextResponse.json({
       status: 200,

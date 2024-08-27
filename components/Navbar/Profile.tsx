@@ -23,7 +23,7 @@ export default function Profile() {
           <img
             src={imageUrl || "Images/avatar.png"}
             alt=""
-            className="w-12 h-12 rounded-full shadow-md"
+            className="w-8 h-8 md:w-12 md:h-12 rounded-full shadow-md"
           />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="flex flex-col items-left">

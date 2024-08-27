@@ -3,11 +3,11 @@ import {
   SheetContent,
   SheetDescription,
   SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Tally3 } from "lucide-react";
-import FilterSideBar from "./filterCard";
+import { lazy } from "react";
+const FilterSideBar = lazy(() => import("@/components/Job/filterCard"));
 
 export default function MobileFilterCard() {
   return (
@@ -18,7 +18,6 @@ export default function MobileFilterCard() {
         </SheetTrigger>
         <SheetContent side={"left"} className="overflow-y-scroll">
           <SheetHeader>
-            <SheetTitle></SheetTitle>
             <SheetDescription>
               <FilterSideBar />
             </SheetDescription>

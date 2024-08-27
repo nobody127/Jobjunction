@@ -75,8 +75,9 @@ export default function JobCard({
 
     checkForBookmarkedPost();
   }, []);
+
   return (
-    <div className="flex flex-col gap-8 p-4 md:p-6 shadow-lg mx-auto w-11/12  lg:w-3/4 bg-white rounded-md border-2">
+    <div className="flex flex-col gap-8 mt-4 lg:mt-0 p-4 md:p-6 shadow-lg mx-auto w-11/12  lg:w-3/4 bg-white rounded-md border-2">
       {showBookmarkToast.status && toast(showBookmarkToast.message)}
 
       {/* first section  */}
@@ -84,7 +85,7 @@ export default function JobCard({
       <div className="flex justify-between">
         <HoverCard>
           <HoverCardTrigger>
-            <Avatar className="cursor-pointer">
+            <Avatar className="cursor-pointer size-8 md:size-10">
               <AvatarImage
                 src={author.avatar ? author.avatar : "Images/avatar.png"}
               />
@@ -94,7 +95,6 @@ export default function JobCard({
           <HoverCardContent className="flex gap-2 items-center">
             <p>{author.username}</p>
             <Link href={`/user/profile/${author.id}`}>
-              {" "}
               <HiExternalLink />
             </Link>
           </HoverCardContent>
@@ -117,17 +117,17 @@ export default function JobCard({
 
       <div>
         <p className="text-gray-500  break-words  ">
-          {role_description.slice(0, 250)}
+          {role_description.slice(0, 100)}
         </p>
 
         <div className="flex w-fit gap-4 mt-6 flex-wrap">
-          <Button className="text-black bg-gray-300 hover:bg-gray-400 hover:text-white">
+          <Button className="text-xs text-black bg-gray-300 hover:bg-gray-400 hover:text-white">
             {location}
           </Button>
-          <Button className="text-black bg-gray-300 hover:bg-gray-400 hover:text-white">
+          <Button className="text-xs text-black bg-gray-300 hover:bg-gray-400 hover:text-white">
             {role_name}
           </Button>
-          <Button className="text-black bg-gray-300 hover:bg-gray-400 hover:text-white">
+          <Button className="text-xs text-black bg-gray-300 hover:bg-gray-400 hover:text-white">
             {job_type}
           </Button>
         </div>
@@ -141,7 +141,7 @@ export default function JobCard({
         <div className="flex gap-2">
           <BadgeIndianRupee />
           <p>
-            {salary_min}-<span>{salary_max}</span>/month
+            ₹{salary_min} - <span>₹{salary_max}</span>/month
           </p>
         </div>
 

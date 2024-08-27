@@ -20,9 +20,12 @@ export const createJobSchema = z.object({
     .string({ message: "Company name is required" })
     .min(2, { message: "Extend it little" }),
 
-  role_description: z.string({ message: "Description is required" }).min(500, {
-    message: "Description need to be long",
-  }),
+  role_description: z
+    .string({ message: "Description is required" })
+    .min(200, {
+      message: "Description need to be long",
+    })
+    .optional(),
 
   location: z.enum(locationEnum, {
     message: "Unexpected Inputs",

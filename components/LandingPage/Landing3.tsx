@@ -1,6 +1,7 @@
-import { Download, GitCommitHorizontal, Github } from "lucide-react";
 import TextComponent from "../TextComp";
 import { Button } from "../ui/button";
+import Link from "next/link";
+import { FaGithub, FaTwitter } from "react-icons/fa";
 
 export default function LandingPart3() {
   return (
@@ -16,21 +17,25 @@ export default function LandingPart3() {
         />
 
         <div className="flex gap-4">
-          <Button
-            variant={"outline"}
-            className="flex gap-4 font-bold bg-white hover:bg-white border-b-4 border-r-4 border-darkBg"
-          >
-            <Github />
-            <TextComponent text="Code" />
-          </Button>
+          <Link href={"https://github.com/Kashyap1ankit/Jobjunction"}>
+            <Button
+              variant={"outline"}
+              className="flex gap-4 font-bold bg-white hover:bg-white border-b-4 border-r-4 border-darkBg"
+            >
+              <FaGithub className="size-6" />
+              <TextComponent text="Code" />
+            </Button>
+          </Link>
 
-          <Button
-            variant={"outline"}
-            className="flex gap-4 font-bold bg-white hover:bg-white border-b-4 border-r-4 border-darkBg"
-          >
-            <Download />
-            <TextComponent text="Updates" />
-          </Button>
+          <Link href={"https://x.com/Ankitka38153827"}>
+            <Button
+              variant={"outline"}
+              className="flex gap-4 font-bold bg-white hover:bg-white border-b-4 border-r-4 border-darkBg"
+            >
+              <FaTwitter className="size-6" />
+              <TextComponent text="Twitter" />
+            </Button>
+          </Link>
         </div>
       </div>
 

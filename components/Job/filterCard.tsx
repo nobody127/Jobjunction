@@ -1,9 +1,13 @@
 "use client";
 
-import { allJobListings } from "@/store/store";
+import {
+  allJobListings,
+  joblistingError,
+  universalLoader,
+} from "@/store/store";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 const experienceValues = ["Fresher", "0-1", "1+", "3+", "5+"];
 const jobTypeValues = ["Fulltime", "Internship", "Contract", "Freelance"];
@@ -11,7 +15,11 @@ const locationTypeValue = ["Remote", "Onsite", "Hybrid"];
 
 export default function FilterSideBar() {
   const { register, watch } = useForm();
-  const [allJobs, setAllJobs] = useRecoilState(allJobListings);
+
+  const setAllJobs = useSetRecoilState(allJobListings);
+  const setLoading = useSetRecoilState(universalLoader);
+  const setError = useSetRecoilState(joblistingError);
+
   const [filter, setFilter] = useState<{
     experience: any[];
     job: any[];
@@ -36,27 +44,35 @@ export default function FilterSideBar() {
       setFilter(newFilter);
   }, [selectedExperience, selectedJob, selectedLocation]);
 
-  useEffect(() => {
-    const callBackend = async () => {
-      try {
-        const response = await fetch(`/api/jobs`, {
-          method: "POST",
-          body: JSON.stringify(filter),
-        });
-        const finalData = await response.json();
-        setAllJobs(finalData.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  const callBackend = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/jobs`, {
+        method: "POST",
+        body: JSON.stringify(filter),
+      });
 
-    if (
-      filter.experience.length <= 0 &&
-      filter.job.length <= 0 &&
-      filter.location.length <= 0
-    )
-      return;
-    callBackend();
+      const finalData = await response.json();
+
+      if (finalData.status !== 200) throw new Error(finalData.message);
+      setError(false);
+      setAllJobs(finalData.data);
+    } catch (error) {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  let timer: any;
+
+  useEffect(() => {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => {
+      callBackend();
+    }, 2000);
+
+    return () => clearTimeout(timer);
   }, [filter]);
 
   return (
@@ -66,7 +82,12 @@ export default function FilterSideBar() {
         {experienceValues.map((e: string, i: number) => {
           return (
             <div className="flex gap-2 mt-4" key={i}>
-              <input type="checkbox" value={e} {...register(e)} />
+              <input
+                type="checkbox"
+                value={e}
+                {...register(e)}
+                className="accent-green-700"
+              />
               <label>{e}</label>
             </div>
           );
@@ -78,7 +99,12 @@ export default function FilterSideBar() {
         {jobTypeValues.map((e: string, i: number) => {
           return (
             <div className="flex gap-2 mt-4" key={i}>
-              <input type="checkbox" value={e} {...register(e)} />
+              <input
+                type="checkbox"
+                value={e}
+                {...register(e)}
+                className="accent-green-700"
+              />
               <label>{e}</label>
             </div>
           );
@@ -90,7 +116,12 @@ export default function FilterSideBar() {
         {locationTypeValue.map((e: string, i: number) => {
           return (
             <div className="flex gap-2 mt-4" key={i}>
-              <input type="checkbox" value={e} {...register(e)} />
+              <input
+                type="checkbox"
+                value={e}
+                {...register(e)}
+                className="accent-green-700"
+              />
               <label>{e}</label>
             </div>
           );
