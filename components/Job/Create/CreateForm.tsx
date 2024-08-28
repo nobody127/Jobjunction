@@ -13,12 +13,14 @@ import { FaSpinner } from "react-icons/fa";
 import { PiOfficeChair } from "react-icons/pi";
 import { toast } from "sonner";
 import { IoChevronBackCircleOutline } from "react-icons/io5";
-import Tiptap from "@/components/TipTap";
+import Tiptap from "@/components/Job/Create/TipTap";
+
 export default function CreateForm() {
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<createJobSchemaType>({
     resolver: zodResolver(createJobSchema),
@@ -38,39 +40,38 @@ export default function CreateForm() {
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(data: any) {
-    console.log(data);
-    // setLoading(true);
-    // try {
-    //   const response = await CreateJob(data);
+    setLoading(true);
+    try {
+      const response = await CreateJob(data);
 
-    //   if (response.status !== 200) throw new Error(response.message);
+      if (response.status !== 200) throw new Error(response.message);
 
-    //   setSuccess(true);
-    //   setTimeout(() => {
-    //     setSuccess(false);
-    //   }, 1500);
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+      }, 1500);
 
-    //   router.push("/jobs");
-    // } catch (error) {
-    //   setError({
-    //     status: true,
-    //     message: (error as Error).message,
-    //   });
+      router.push("/jobs");
+    } catch (error) {
+      setError({
+        status: true,
+        message: (error as Error).message,
+      });
 
-    //   setTimeout(() => {
-    //     setError({
-    //       status: false,
-    //       message: "",
-    //     });
-    //   }, 1500);
-    // } finally {
-    //   reset();
-    //   setLoading(false);
-    // }
+      setTimeout(() => {
+        setError({
+          status: false,
+          message: "",
+        });
+      }, 1500);
+    } finally {
+      reset();
+      setLoading(false);
+    }
   }
 
   return (
-    <div className="p-4 md:p-12 bg-white">
+    <div className="p-4 md:p-8 bg-white">
       {success ? toast("Successfully created") : ""}
 
       {error.status ? toast(error.message) : ""}

@@ -9,7 +9,7 @@ const jobTypeEnum = [
   "Freelance",
 ] as const;
 
-const experienceEnum = ["Fresher", "0-1", "1+", "3+", "5+"] as const;
+const experienceEnum = ["Fresher", "0-1y", "1y", "3y", "5y"] as const;
 
 export const createJobSchema = z.object({
   position: z
@@ -20,13 +20,9 @@ export const createJobSchema = z.object({
     .string({ message: "Company name is required" })
     .min(2, { message: "Extend it little" }),
 
-  role_description: z
-    .string({ message: "Description is required" })
-    .min(200, {
-      message: "Description need to be long",
-    })
-    .optional(),
-
+  role_description: z.string({ message: "Description is required" }).min(200, {
+    message: "Description need to be long",
+  }),
   location: z.enum(locationEnum, {
     message: "Unexpected Inputs",
   }),

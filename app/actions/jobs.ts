@@ -57,6 +57,10 @@ export async function CreateJob(postdata: createJobSchemaType) {
 export async function GetAllPost() {
   try {
     const allPosts = await prisma.post.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+
       select: {
         id: true,
         apply_link: true,

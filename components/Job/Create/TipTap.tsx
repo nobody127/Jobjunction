@@ -12,14 +12,14 @@ import HorizonatlRule from "@tiptap/extension-horizontal-rule";
 import Highlight from "@tiptap/extension-highlight";
 import Bold from "@tiptap/extension-bold";
 import Italic from "@tiptap/extension-italic";
-import Link from "@tiptap/extension-link";
 import Strike from "@tiptap/extension-strike";
 import Underline from "@tiptap/extension-underline";
 import CharacterCount from "@tiptap/extension-character-count";
 import History from "@tiptap/extension-history";
+import { Color } from "@tiptap/extension-color";
+import TextStyle from "@tiptap/extension-text-style";
 import {
   Highlighter,
-  Link2,
   LucideHeading1,
   LucideRuler,
   Redo,
@@ -34,29 +34,9 @@ import {
 } from "react-icons/md";
 import { IoCodeSlash } from "react-icons/io5";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { MouseEventHandler, useState } from "react";
-
 const limit = 5000;
 
 const Tiptap = ({ className, name, setValue }: any) => {
-  const [link, setLink] = useState<string | undefined>();
-
-  function handleLinkInsert(e: any) {
-    e.preventDefault();
-    e.stopPropagation();
-    const formData = new FormData(e.target);
-    const link = formData.get("link");
-    setLink(link as string);
-  }
-
   const editor = useEditor({
     editorProps: {
       attributes: {
@@ -100,15 +80,11 @@ const Tiptap = ({ className, name, setValue }: any) => {
       }),
       Italic,
       Underline,
-      Link.configure({
-        defaultProtocol: "https",
-        HTMLAttributes: {
-          rel: "noopener noreferrer",
-          class: "underline-offset-1 text-blue-600",
-        },
-        validate: (href) => /^https?:\/\//.test(href),
-      }),
       Strike,
+      TextStyle,
+      Color.configure({
+        types: ["textStyle"],
+      }),
       CharacterCount.configure({
         limit,
       }),
@@ -128,6 +104,11 @@ const Tiptap = ({ className, name, setValue }: any) => {
   const percentage = editor
     ? Math.round((100 / limit) * editor.storage.characterCount.characters())
     : 0;
+
+  function handleColor(e: any) {
+    console.log(e.target.value);
+    editor?.commands.setColor(e.target.value);
+  }
   return (
     <div className={className}>
       <div className="flex gap-8 mt-2 border-b-2 pb-2 border-black overflow-x-scroll no-scrollbar items-center relative sticky top-0 left-0 px-4 z-50 bg-gray-200">
@@ -165,44 +146,16 @@ const Tiptap = ({ className, name, setValue }: any) => {
           <Highlighter className="size-4" />
         </div>
 
-        <div
-          onClick={() =>
-            editor.commands.toggleLink({
-              href: link || "",
-            })
-          }
-        >
-          <Dialog>
-            <DialogTrigger>
-              <Link2 className="size-4" />
-            </DialogTrigger>
-            <DialogContent className="bg-slate-200">
-              <DialogHeader>
-                <DialogTitle>Redirecting link</DialogTitle>
-                <DialogDescription>
-                  <form onSubmit={handleLinkInsert}>
-                    <input
-                      className="p-2 px-4 outline-2 w-full mt-4 outline-black rounded-md border-2 border-slate-500"
-                      placeholder="https://google.com"
-                      name="link"
-                    />
-                    <div className="w-full flex justify-end ">
-                      <button
-                        type="submit"
-                        className="bg-green-600 mt-4 p-2 rounded-md text-white font-bold font-kanit cursor-pointer"
-                      >
-                        Submit
-                      </button>
-                    </div>
-                  </form>
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
-        </div>
-
         <div onClick={() => editor.commands.toggleStrike()}>
           <Strikethrough className="size-4" />
+        </div>
+
+        <div onClick={() => editor.commands.setColor("red")}>
+          <input
+            type="color"
+            className="w-6 h-6  rounded-full border-none outline-none"
+            onChange={(e) => handleColor(e)}
+          />
         </div>
         <div onClick={() => editor.commands.undo()}>
           <Undo className="size-4" />

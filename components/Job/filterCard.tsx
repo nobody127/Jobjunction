@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 
-const experienceValues = ["Fresher", "0-1", "1+", "3+", "5+"];
+const experienceValues = ["Fresher", "0-1y", "1y", "3y", "5y"];
 const jobTypeValues = ["Fulltime", "Internship", "Contract", "Freelance"];
 const locationTypeValue = ["Remote", "Onsite", "Hybrid"];
 

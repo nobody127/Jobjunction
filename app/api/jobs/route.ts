@@ -13,6 +13,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
           location.length > 0 ? { location: { in: location } } : {},
         ],
       },
+
+      orderBy: {
+        createdAt: "desc",
+      },
       select: {
         id: true,
         apply_link: true,

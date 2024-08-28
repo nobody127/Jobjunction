@@ -29,7 +29,7 @@ model User {
 }
 
 model Post {
-  id               String   @id @default(uuid())
+  id               String    @id @default(uuid())
   authorId         String
   apply_link       String
   company          String
@@ -41,9 +41,12 @@ model Post {
   role_name        String
   salary_max       Int
   salary_min       Int
-  author           User    @relation(fields: [authorId], references: [id],onDelete: Cascade)
+  author           User      @relation(fields: [authorId], references: [id],onDelete: Cascade)
   bookmarks        Bookmark[]
-}
+
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt 
+  }
 
 model Bookmark {
   id     String @id @default(uuid())

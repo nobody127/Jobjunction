@@ -147,7 +147,7 @@ export default function JobCard({
 
         <div className="flex gap-2">
           <BriefcaseBusiness />
-          <p>{experience_level}(y)</p>
+          <p>{experience_level}</p>
         </div>
         <Link href={apply_link}>
           <Button className="bg-white text-black border-2 border-b-8 border-r-8 border-black hover:bg-white flex gap-2">

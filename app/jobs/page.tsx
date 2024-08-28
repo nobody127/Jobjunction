@@ -50,7 +50,7 @@ export default function AllJobs() {
 
   return (
     <div className="lg:flex lg:gap-8">
-      {error.status ? toast(error.message) : ""}
+      {error.status ? toast(error.message || "Error Occured") : ""}
 
       <DesktopFilterCard />
 
