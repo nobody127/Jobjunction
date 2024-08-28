@@ -23,11 +23,13 @@ model User {
   updatedAt     DateTime @updatedAt
   provider      Provider @default(google)
   provider_id   String?
+  role          UserRole @default(USER)
   posts         Post[]
+  bookmarks     Bookmark[]
 }
 
 model Post {
-  id               Int    @id @default(autoincrement())
+  id               String    @id @default(uuid())
   authorId         String
   apply_link       String
   company          String
@@ -39,10 +41,27 @@ model Post {
   role_name        String
   salary_max       Int
   salary_min       Int
-  author           User   @relation(fields: [authorId], references: [id],onDelete: Cascade)
+  author           User      @relation(fields: [authorId], references: [id],onDelete: Cascade)
+  bookmarks        Bookmark[]
+
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt 
+  }
+
+model Bookmark {
+  id     String @id @default(uuid())
+  postId String
+  userId String
+  post   Post   @relation(fields: [postId],references: [id],onDelete: Cascade)
+  user   User   @relation(fields: [userId],references: [id],onDelete: Cascade)
 }
 
 enum Provider {
   google
   credentials
+}
+
+enum UserRole {
+  ADMIN
+  USER
 }

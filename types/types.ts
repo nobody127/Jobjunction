@@ -2,12 +2,6 @@ export type TextComponentType = {
   text: string;
   className?: string;
 };
-
-export type ThemeStoreType = {
-  theme: string;
-  toggleTheme: () => void;
-};
-
 export type FieldsMarqueeType = {
   field: string;
   jobs: number;
@@ -21,7 +15,7 @@ export type GetAllPostResponseType = {
 };
 
 export type JobLisitingType = {
-  id: number | undefined;
+  id: string;
   apply_link: string;
   company: string;
   experience_level: string;
@@ -37,4 +31,9 @@ export type JobLisitingType = {
     avatar: string | null;
     username: string;
   };
+};
+
+export type universalErrorType = {
+  status: boolean;
+  message: string;
 };

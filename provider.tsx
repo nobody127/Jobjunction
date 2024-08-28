@@ -1,6 +1,7 @@
-// import type { AppProps } from "next/app";
+"use client";
 import { SessionProvider } from "next-auth/react";
 import { ReactNode } from "react";
+import { RecoilRoot } from "recoil";
 
 export default function AuthProvider({
   children,
@@ -9,5 +10,9 @@ export default function AuthProvider({
   children: ReactNode;
   session: any;
 }) {
-  return <SessionProvider session={session}>{children}</SessionProvider>;
+  return (
+    <RecoilRoot>
+      <SessionProvider session={session}>{children}</SessionProvider>
+    </RecoilRoot>
+  );
 }

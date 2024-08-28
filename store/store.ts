@@ -1,13 +1,31 @@
 "use client";
 
-import { ThemeStoreType } from "@/types/types";
-import { create } from "zustand";
+import { JobLisitingType, universalErrorType } from "@/types/types";
+import { atom } from "recoil";
 
-export const useThemeStore = create<ThemeStoreType>((set) => ({
-  theme: localStorage.getItem("job-theme") || "light",
-  toggleTheme: () => {
-    set((state) => ({
-      theme: state.theme === "light" ? "dark" : "light",
-    }));
+//Universal
+
+export const universalLoader = atom<boolean>({
+  key: "universalLoader",
+  default: false,
+});
+
+export const universalError = atom<universalErrorType>({
+  key: "universalError",
+  default: {
+    status: false,
+    message: "",
   },
-}));
+});
+
+//Joblisting atoms
+
+export const allJobListings = atom<JobLisitingType[]>({
+  key: "allJobListing",
+  default: [],
+});
+
+export const joblistingError = atom<boolean>({
+  key: "joblistingError",
+  default: false,
+});

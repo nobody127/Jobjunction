@@ -31,7 +31,6 @@ export default function MobileNav() {
           </SheetTrigger>
           <SheetContent>
             <SheetHeader>
-              <SheetTitle></SheetTitle>
               <SheetDescription>
                 <div className="mt-8">
                   <Button

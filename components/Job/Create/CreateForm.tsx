@@ -13,10 +13,13 @@ import { FaSpinner } from "react-icons/fa";
 import { PiOfficeChair } from "react-icons/pi";
 import { toast } from "sonner";
 import { IoChevronBackCircleOutline } from "react-icons/io5";
+import Tiptap from "@/components/Job/Create/TipTap";
+
 export default function CreateForm() {
   const {
     register,
     handleSubmit,
+    setValue,
     reset,
     formState: { errors },
   } = useForm<createJobSchemaType>({
@@ -68,7 +71,7 @@ export default function CreateForm() {
   }
 
   return (
-    <div className="p-4 md:p-12 bg-white">
+    <div className="p-4 md:p-8 bg-white">
       {success ? toast("Successfully created") : ""}
 
       {error.status ? toast(error.message) : ""}
@@ -135,14 +138,14 @@ export default function CreateForm() {
             >
               Role Description
             </label>
-            <div className="flex gap-2 items-center bg-gray-200 px-4 py-2 rounded-md w-full outline-none font-kanit mt-2 ">
-              <textarea
-                className="bg-transparent outline-none w-full resize-none no-scrollbar "
-                placeholder="Write Description.."
-                {...register("role_description")}
-                id="role_description"
-              />
-            </div>
+
+            <Tiptap
+              className="bg-gray-200 px-4 py-2 rounded-md w-full font-kanit mt-2 min-h-80 max-h-80 overflow-y-scroll overflow-x-hidden"
+              register={register}
+              name="role_description"
+              setValue={setValue}
+            />
+
             {errors.role_description?.message && (
               <p className="mt-2 font-bold text-red-500">
                 {errors.role_description?.message}
@@ -324,7 +327,11 @@ export default function CreateForm() {
         </div>
 
         <div className="flex justify-end">
-          <Button className={`border-2 mt-4 bg-black`} disabled={loading}>
+          <Button
+            type="submit"
+            className={`border-2 mt-4 bg-black`}
+            disabled={loading}
+          >
             {loading ? <FaSpinner className="animate-spin" /> : "Submit"}
           </Button>
         </div>

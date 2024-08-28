@@ -23,14 +23,14 @@ export default function Profile() {
           <img
             src={imageUrl || "Images/avatar.png"}
             alt=""
-            className="w-12 h-12 rounded-full shadow-md"
+            className="w-8 h-8 md:w-12 md:h-12 rounded-full shadow-md"
           />
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent className="flex flex-col items-left">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <Link href="/jobs" className="flex gap-2 items-center ">
+            <Link href="/jobs" className="flex gap-2 items-center w-full ">
               <TextComponent text="Get Job" className=" font-bebas" />
               <TbHandClick />
             </Link>
@@ -39,6 +39,16 @@ export default function Profile() {
           <DropdownMenuItem>
             <Link href={"/jobs/create"} className="flex gap-2 items-center">
               <TextComponent text="Post Job" className=" font-bebas" />
+              <PlusCircle className="size-4" />
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem>
+            <Link
+              href={`user/profile/${session.data?.user?.id}`}
+              className="flex gap-2 items-center"
+            >
+              <TextComponent text="Profile" className=" font-bebas" />
               <PlusCircle className="size-4" />
             </Link>
           </DropdownMenuItem>
