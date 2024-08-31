@@ -242,9 +242,9 @@ export default function CreateForm() {
               >
                 <option value="Fresher">Fresher</option>
                 <option value="0-1">0-1</option>
-                <option value="1+">1+ years</option>
-                <option value="3+">3+ years</option>
-                <option value="5+">5+ years</option>
+                <option value="1y">1+ years</option>
+                <option value="3y">3+ years</option>
+                <option value="5y">5+ years</option>
               </select>
             </div>
             {errors.experience_level?.message && (

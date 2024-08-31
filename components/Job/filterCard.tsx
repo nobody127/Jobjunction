@@ -15,7 +15,6 @@ const locationTypeValue = ["Remote", "Onsite", "Hybrid"];
 
 export default function FilterSideBar() {
   const { register, watch } = useForm();
-
   const setAllJobs = useSetRecoilState(allJobListings);
   const setLoading = useSetRecoilState(universalLoader);
   const setError = useSetRecoilState(joblistingError);
@@ -70,7 +69,7 @@ export default function FilterSideBar() {
     if (timer) clearTimeout(timer);
     timer = setTimeout(() => {
       callBackend();
-    }, 2000);
+    }, 1200);
 
     return () => clearTimeout(timer);
   }, [filter]);

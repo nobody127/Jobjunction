@@ -46,6 +46,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             id: isUserExist?.id,
             username: isUserExist?.username,
             email: isUserExist.email,
+            role: isUserExist.role,
           };
         } catch (error: any) {
           throw new Error(error.message);
@@ -65,6 +66,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           });
 
           if (!userDetials) {
+            let admin = false;
+            if (user.email === "kashyap25ankit@gmail.com") admin = true;
             const createdUser = await prisma.user.create({
               data: {
                 username: user.email as string,
@@ -72,16 +75,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 avatar: user.image,
                 provider: account.provider,
                 provider_id: account.providerAccountId,
+                role: admin ? "ADMIN" : "USER",
               },
             });
 
             if (!createdUser) throw new Error("Error while saving the user");
             //pushing the db id here instead of custom google id
             user.id = createdUser.id as string;
+            user.role = createdUser.role as string;
             return true;
           }
           //pushing the db id here instead of custom google id
           user.id = userDetials.id as string;
+          user.role = userDetials.role as string;
           return true;
         } catch (error) {
           return false;
@@ -93,19 +99,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return false;
     },
-    async jwt({ token, user }: any) {
+    async jwt({ token, user }) {
       if (user) {
+        console.log(user);
         token.id = user.id;
         token.username = user.username ?? user.email;
+        token.role = user.role;
       }
       return token;
     },
 
-    async session({ session, token }: any) {
+    async session({ session, token }) {
       session.user.id = token.id as string;
       session.user.email = token.email as string;
       session.user.username = token.username as string;
-
+      session.user.role = token.role as string;
       return session;
     },
   },
