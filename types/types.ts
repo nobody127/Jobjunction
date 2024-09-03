@@ -37,3 +37,17 @@ export type universalErrorType = {
   status: boolean;
   message: string;
 };
+
+export type GetUserDetailByIdType = {
+  id: string;
+  username: string;
+  email: string;
+  linkedin_url: string | null;
+  instagram_url: string | null;
+  twitter_url: string | null;
+  bio: string | null;
+  avatar: string | null;
+  createdAt: Date;
+  skills: string[];
+  role: string;
+};

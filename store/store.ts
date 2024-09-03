@@ -29,3 +29,15 @@ export const joblistingError = atom<boolean>({
   key: "joblistingError",
   default: false,
 });
+
+//User profile
+
+export const isProfileVisitorUser = atom<boolean>({
+  key: "isProfileVisitorUser",
+  default: false,
+});
+
+export const refetchAtom = atom({
+  key: "refetch",
+  default: false,
+});

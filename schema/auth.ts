@@ -21,7 +21,8 @@ export const signupSchema = z.object({
     .optional(),
   bio: z
     .string({ message: "Oops! You missed a spot" })
-    .min(10, { message: "Extend it little more" }),
+    .min(10, { message: "Extend it little more" })
+    .max(30, { message: "Max lenght is 20" }),
   instagram_url: z.string().optional(),
   linkedin_url: z.string().optional(),
   twitter_url: z.string().optional(),
@@ -42,5 +43,16 @@ export const signinSchema = z.object({
     .regex(new RegExp(".*[0-9].*"), { message: "Must include a number" }),
 });
 
+export const userProfileUpdateSchema = z.object({
+  bio: z
+    .string({ message: "Oops! You missed a spot" })
+    .max(30, { message: "Max lenght is 30" })
+    .optional(),
+  instagram_url: z.string().optional(),
+  linkedin_url: z.string().optional(),
+  twitter_url: z.string().optional(),
+});
+
 export type SignupInputType = z.infer<typeof signupSchema>;
 export type SigninInputType = z.infer<typeof signinSchema>;
+export type userProfileUpdateType = z.infer<typeof userProfileUpdateSchema>;

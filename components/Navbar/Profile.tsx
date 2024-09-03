@@ -45,11 +45,10 @@ export default function Profile() {
 
           <DropdownMenuItem>
             <Link
-              href={`user/profile/${session.data?.user?.id}`}
+              href={`/user/${session.data?.user?.id}/profile`}
               className="flex gap-2 items-center"
             >
               <TextComponent text="Profile" className=" font-bebas" />
-              <PlusCircle className="size-4" />
             </Link>
           </DropdownMenuItem>
 

@@ -29,3 +29,40 @@ export async function CheckUser() {
     };
   }
 }
+
+export async function GetUserDetailById(userId: string) {
+  try {
+    const isUser = await prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        linkedin_url: true,
+        instagram_url: true,
+        twitter_url: true,
+        bio: true,
+        avatar: true,
+        createdAt: true,
+        skills: true,
+        role: true,
+      },
+    });
+
+    if (!isUser) throw new Error("User Not exist in database");
+
+    return {
+      status: 200,
+      message: "Logged In",
+      data: isUser,
+    };
+  } catch (error: any) {
+    return {
+      status: 404,
+      message: error.message,
+      data: null,
+    };
+  }
+}

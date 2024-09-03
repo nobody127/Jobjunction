@@ -47,6 +47,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             username: isUserExist?.username,
             email: isUserExist.email,
             role: isUserExist.role,
+            instagram: isUserExist.instagram_url,
+            linkedin: isUserExist.linkedin_url,
+            twitter: isUserExist.twitter_url,
+            bio: isUserExist.bio,
+            createdAt: isUserExist.createdAt,
           };
         } catch (error: any) {
           throw new Error(error.message);
@@ -83,11 +88,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             //pushing the db id here instead of custom google id
             user.id = createdUser.id as string;
             user.role = createdUser.role as string;
+            user.instagram = createdUser.instagram_url as string;
+            user.linkedin = createdUser.linkedin_url as string;
+            user.twitter = createdUser.twitter_url as string;
+            user.bio = createdUser.bio as string;
+            user.createdAt = createdUser.createdAt;
             return true;
           }
           //pushing the db id here instead of custom google id
           user.id = userDetials.id as string;
           user.role = userDetials.role as string;
+          user.instagram = userDetials.instagram_url as string;
+          user.linkedin = userDetials.linkedin_url as string;
+          user.twitter = userDetials.twitter_url as string;
+          user.bio = userDetials.bio as string;
+          user.createdAt = userDetials.createdAt;
           return true;
         } catch (error) {
           return false;
@@ -105,6 +120,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.id = user.id;
         token.username = user.username ?? user.email;
         token.role = user.role;
+        token.instagram = user.instagram;
+        token.linkedin = user.linkedin;
+        token.twitter = user.twitter;
+        token.bio = user.bio;
+        token.createdAt = user.createdAt;
       }
       return token;
     },
@@ -114,6 +134,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.user.email = token.email as string;
       session.user.username = token.username as string;
       session.user.role = token.role as string;
+      session.user.instagram = token.instagram as string;
+      session.user.linkedin = token.linkedin as string;
+      session.user.twitter = token.twitter as string;
+      session.user.bio = token.bio as string;
+      session.user.createdAt = token.createdAt as Date;
       return session;
     },
   },
