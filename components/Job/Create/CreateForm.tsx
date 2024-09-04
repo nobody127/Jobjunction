@@ -241,7 +241,7 @@ export default function CreateForm() {
                 {...register("experience_level")}
               >
                 <option value="Fresher">Fresher</option>
-                <option value="0-1">0-1</option>
+                <option value="0-1y">0-1</option>
                 <option value="1y">1+ years</option>
                 <option value="3y">3+ years</option>
                 <option value="5y">5+ years</option>

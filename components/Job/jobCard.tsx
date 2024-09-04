@@ -1,20 +1,17 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { BadgeIndianRupee, Bookmark, BriefcaseBusiness } from "lucide-react";
-import { Button } from "../ui/button";
-import { TbHandClick } from "react-icons/tb";
-import Link from "next/link";
-import { JobLisitingType } from "@/types/types";
-
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { BadgeIndianRupee, BriefcaseBusiness } from "lucide-react";
+import { Button } from "../ui/button";
+import { TbHandClick } from "react-icons/tb";
+import Link from "next/link";
+import { JobLisitingType } from "@/types/types";
 import { HiExternalLink } from "react-icons/hi";
-import { CheckForBookmark, HandleBookmakrClick } from "@/app/actions/bookmark";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
+import MoreOptionDialog from "./MoreDialog";
 
 export default function JobCard({
   id,
@@ -30,56 +27,8 @@ export default function JobCard({
   experience_level,
   apply_link,
 }: JobLisitingType) {
-  const session: any = useSession();
-  const [bookmarked, setBookmarked] = useState<boolean>(false);
-  const [showBookmarkToast, setShowBookmarkToast] = useState({
-    status: false,
-    message: "",
-  });
-
-  async function handleBookmarkClick() {
-    try {
-      const response = await HandleBookmakrClick(session.data?.user?.id, id);
-      if (response.status !== 200) throw new Error(response.message);
-      setBookmarked(true);
-      setShowBookmarkToast({
-        status: true,
-        message: response.message,
-      });
-    } catch (error) {
-      setBookmarked(false);
-      setShowBookmarkToast({
-        status: true,
-        message: (error as Error).message,
-      });
-    } finally {
-      setTimeout(() => {
-        setShowBookmarkToast({
-          status: false,
-          message: "",
-        });
-      }, 1000);
-    }
-  }
-
-  useEffect(() => {
-    const checkForBookmarkedPost = async () => {
-      try {
-        const response = await CheckForBookmark(session.data?.user?.id, id);
-        if (response.status !== 200) throw new Error(response.message);
-        setBookmarked(true);
-      } catch (error) {
-        setBookmarked(false);
-      }
-    };
-
-    checkForBookmarkedPost();
-  }, []);
-
   return (
     <div className="flex flex-col gap-8 mt-4 lg:mt-0 p-4 md:p-6 shadow-lg mx-auto w-11/12  lg:w-3/4 bg-white rounded-md border-2">
-      {showBookmarkToast.status && toast(showBookmarkToast.message)}
-
       {/* first section  */}
 
       <div className="flex justify-between">
@@ -94,7 +43,7 @@ export default function JobCard({
           </HoverCardTrigger>
           <HoverCardContent className="flex gap-2 items-center">
             <p>{author.username}</p>
-            <Link href={`/user/profile/${author.id}`}>
+            <Link href={`/user/${author.id}/profile`}>
               <HiExternalLink />
             </Link>
           </HoverCardContent>
@@ -107,10 +56,7 @@ export default function JobCard({
           <p className="text-gray-400 text-sm">{company}</p>
         </div>
 
-        <Bookmark
-          className={`cursor-pointer ${bookmarked ? "fill-blue-950" : ""}`}
-          onClick={() => handleBookmarkClick()}
-        />
+        <MoreOptionDialog postId={id} authorId={author.id} />
       </div>
 
       {/* second section  */}

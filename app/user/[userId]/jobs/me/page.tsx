@@ -1,9 +1,5 @@
-export default function MyPosts({
-  params,
-}: {
-  params: {
-    userId: string;
-  };
-}) {
-  return <div> hi ${params.userId} you have 3posts</div>;
+import PostedJob from "@/components/User/Tabs/Posts/Posts";
+
+export default function MyPosts() {
+  return <PostedJob />;
 }

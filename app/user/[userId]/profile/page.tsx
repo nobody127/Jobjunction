@@ -1,4 +1,4 @@
-import UserProfileDashboard from "@/components/Profile/Tabs/Profile";
+import UserProfileDashboard from "@/components/User/Tabs/Profile/Profile";
 
 export default function UserProfile() {
   return <UserProfileDashboard />;

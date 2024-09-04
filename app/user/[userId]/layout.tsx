@@ -1,5 +1,5 @@
 import Navbar from "@/components/Navbar/Navbar";
-import UserDashboardSidebar from "@/components/Profile/Sidebar/UserDashSidebar";
+import UserDashboardSidebar from "@/components/User/Sidebar/UserDashSidebar";
 
 export default function UserLayout({
   children,

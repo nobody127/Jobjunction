@@ -16,7 +16,6 @@ import {
   RefreshCcw,
   User2,
 } from "lucide-react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -49,8 +48,7 @@ export default function UserProfileDashboard() {
     role: "",
   });
 
-  const { userId } = useParams();
-  const session = useSession();
+  const { userId }: { userId: string } = useParams();
 
   const getFormattedDate = (createdAt: Date) => {
     const date = new Date(createdAt);
@@ -61,16 +59,6 @@ export default function UserProfileDashboard() {
 
     setAccountCreated(formattedDate);
   };
-
-  function checkForVisitor(id: string) {
-    if (session.data) {
-      if (session.data.user?.id === id) {
-        return setIsVisitorUser(true);
-      }
-    }
-
-    setIsVisitorUser(false);
-  }
 
   useEffect(() => {
     const getUser = async () => {
@@ -86,7 +74,6 @@ export default function UserProfileDashboard() {
 
         setUser(res.data);
         getFormattedDate(res.data.createdAt);
-        checkForVisitor(res.data.id);
       } catch (error) {
         setError({
           status: true,
