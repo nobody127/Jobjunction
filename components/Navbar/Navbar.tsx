@@ -4,6 +4,7 @@ import Link from "next/link";
 import TextComponent from "../TextComp";
 import DesktopNav from "./DeskNav";
 import MobileNav from "./MobNav";
+import { poppins } from "@/utils/fonts/font";
 
 export default function Navbar() {
   return (
@@ -12,7 +13,7 @@ export default function Navbar() {
         <Link href={"/"}>
           <TextComponent
             text="JobJunction"
-            className="border-b-8  border-r-8 border-darkBg  bg-white px-2 py-1 rounded-md cursor-pointer hover:-translate-y-1 font-bebas"
+            className={`border-b-8  border-r-8 border-darkBg  bg-white px-2 py-1 rounded-md cursor-pointer hover:-translate-y-1 font-bebas ${poppins.className}`}
           />
         </Link>
       </div>

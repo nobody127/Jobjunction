@@ -1,8 +1,10 @@
 "use server";
 
 import { createJobSchema, createJobSchemaType } from "@/schema/jobs";
-import { CheckUser } from "./checkUser";
+import { CheckUser } from "../users/checkUser";
 import prisma from "@/db";
+
+// Create new Jobs
 
 export async function CreateJob(postdata: createJobSchemaType) {
   try {
@@ -11,7 +13,7 @@ export async function CreateJob(postdata: createJobSchemaType) {
 
     const response = await CheckUser();
 
-    if (response.status !== 200) throw new Error("User is not logged In");
+    if (response.status !== 200) throw new Error(response.message);
 
     const newJob = await prisma.post.create({
       data: {
@@ -54,6 +56,8 @@ export async function CreateJob(postdata: createJobSchemaType) {
   }
 }
 
+//Get All jobs posting
+
 export async function GetAllPost() {
   try {
     const allPosts = await prisma.post.findMany({
@@ -95,6 +99,97 @@ export async function GetAllPost() {
       status: 404,
       message: (error as Error).message,
       data: [],
+    };
+  }
+}
+
+//Get jobs by authorid
+
+export async function GetPostByAuthorId(authorId: string) {
+  try {
+    const response = await CheckUser();
+
+    if (response.status !== 200) throw new Error(response.message);
+
+    const getPost = await prisma.post.findMany({
+      where: {
+        authorId: authorId,
+      },
+
+      select: {
+        id: true,
+        apply_link: true,
+        company: true,
+        experience_level: true,
+        job_type: true,
+        location: true,
+        position: true,
+        role_description: true,
+        role_name: true,
+        salary_max: true,
+        salary_min: true,
+        author: {
+          select: {
+            id: true,
+            avatar: true,
+            username: true,
+          },
+        },
+      },
+    });
+    if (!getPost || getPost.length === 0)
+      throw new Error("No Post related to user found");
+
+    return {
+      status: 200,
+      message: "Fetched users all post",
+      data: getPost,
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: (error as Error).message,
+      data: [],
+    };
+  }
+}
+
+//Delete Job
+
+export async function DestroyPost(postId: string, authorId: string) {
+  try {
+    const response = await CheckUser();
+
+    if (response.status !== 200) throw new Error(response.message);
+
+    const isUserAuthor = await prisma.post.findFirst({
+      where: {
+        id: postId,
+        authorId: authorId,
+      },
+    });
+
+    console.log(isUserAuthor);
+
+    if (!isUserAuthor) throw new Error("User is not the author of the post");
+
+    const deletedPost = await prisma.post.delete({
+      where: {
+        id: postId,
+        authorId: authorId,
+      },
+    });
+
+    if (!deletedPost) throw new Error("Error while deleting the user");
+
+    return {
+      status: 201,
+      message: "Deleted Successfully",
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: (error as Error).message,
     };
   }
 }

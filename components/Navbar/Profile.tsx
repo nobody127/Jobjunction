@@ -7,7 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, PlusCircle } from "lucide-react";
+import { LogOut, PlusCircle, UserCircle } from "lucide-react";
 import { TbHandClick } from "react-icons/tb";
 import TextComponent from "../TextComp";
 import Link from "next/link";
@@ -30,14 +30,20 @@ export default function Profile() {
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <Link href="/jobs" className="flex gap-2 items-center w-full ">
+            <Link
+              href="/jobs"
+              className="flex gap-2 items-center w-full justify-center "
+            >
               <TextComponent text="Get Job" className=" font-bebas" />
               <TbHandClick />
             </Link>
           </DropdownMenuItem>
 
           <DropdownMenuItem>
-            <Link href={"/jobs/create"} className="flex gap-2 items-center">
+            <Link
+              href={"/jobs/create"}
+              className="flex gap-2 items-center w-full justify-center"
+            >
               <TextComponent text="Post Job" className=" font-bebas" />
               <PlusCircle className="size-4" />
             </Link>
@@ -45,18 +51,21 @@ export default function Profile() {
 
           <DropdownMenuItem>
             <Link
-              href={`user/profile/${session.data?.user?.id}`}
-              className="flex gap-2 items-center"
+              href={`/user/${session.data?.user?.id}/profile`}
+              className="flex gap-2 items-center w-full justify-center"
             >
               <TextComponent text="Profile" className=" font-bebas" />
-              <PlusCircle className="size-4" />
+              <UserCircle className="size-4" />
             </Link>
           </DropdownMenuItem>
 
           <DropdownMenuItem>
-            <div onClick={() => signOut()} className="flex gap-2 items-center">
+            <div
+              onClick={() => signOut()}
+              className="flex gap-2 items-center w-full justify-center"
+            >
               <p>Logout</p>
-              <LogOut className="mx-auto size-4 " />
+              <LogOut className=" size-4 " />
             </div>
           </DropdownMenuItem>
         </DropdownMenuContent>

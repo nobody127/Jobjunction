@@ -27,6 +27,8 @@ const config = {
         primaryPurple: "#a51ecc",
         secondaryPurple: "#c097cc",
         darkBg: "#040418",
+        sideBarBgColor: "#e9f0fe",
+        sideBarColor: "#1f66fc",
 
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

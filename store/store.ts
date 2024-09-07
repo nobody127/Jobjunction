@@ -1,7 +1,7 @@
 "use client";
 
 import { JobLisitingType, universalErrorType } from "@/types/types";
-import { atom } from "recoil";
+import { atom, atomFamily } from "recoil";
 
 //Universal
 
@@ -27,5 +27,22 @@ export const allJobListings = atom<JobLisitingType[]>({
 
 export const joblistingError = atom<boolean>({
   key: "joblistingError",
+  default: false,
+});
+
+//User profile
+
+export const isProfileVisitorUser = atom<boolean>({
+  key: "isProfileVisitorUser",
+  default: false,
+});
+
+export const refetchAtom = atom({
+  key: "refetch",
+  default: false,
+});
+
+export const bookmarkedPosts = atomFamily<boolean, string>({
+  key: "bookmarkedPosts",
   default: false,
 });

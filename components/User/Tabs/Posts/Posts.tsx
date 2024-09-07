@@ -1,64 +1,39 @@
 "use client";
 
+import { GetPostByAuthorId } from "@/app/actions/posts/jobs";
 import JobCard from "@/components/Job/jobCard";
-import { useEffect } from "react";
-import { GetAllPost } from "../actions/posts/jobs";
-import { toast } from "sonner";
-import { GetAllPostResponseType, JobLisitingType } from "@/types/types";
-import MobileFilterCard from "@/components/Job/mobFilterCard";
-import DesktopFilterCard from "@/components/Job/deskFilterCard";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  allJobListings,
-  joblistingError,
-  universalError,
-  universalLoader,
-} from "@/store/store";
+import { JobLisitingType } from "@/types/types";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default function AllJobs() {
-  const [allJobs, setAllJobs] = useRecoilState(allJobListings);
-  const [loading, setLoading] = useRecoilState(universalLoader);
-  const [error, setError] = useRecoilState(universalError);
-  const errorNoPost = useRecoilValue(joblistingError);
+export default function PostedJob() {
+  const { userId }: { userId: string } = useParams();
+  const [loading, setLoading] = useState(false);
+  const [errorNoPost, setErrorNoPost] = useState(false);
+
+  const [myPostedJobs, setMyPostedJobs] = useState<JobLisitingType[]>([]);
 
   useEffect(() => {
-    const getAllJobs = async () => {
+    const getUserPost = async () => {
       setLoading(true);
       try {
-        const response: GetAllPostResponseType = await GetAllPost();
+        const response = await GetPostByAuthorId(userId);
         if (response.status !== 200) throw new Error(response.message);
-        setAllJobs(response.data);
+        setMyPostedJobs(response.data);
       } catch (error) {
-        setError({
-          status: false,
-          message: (error as Error).message,
-        });
-
-        setTimeout(() => {
-          setError({
-            status: true,
-            message: "",
-          });
-        }, 1500);
+        setErrorNoPost(true);
       } finally {
         setLoading(false);
       }
     };
-
-    getAllJobs();
+    getUserPost();
   }, []);
 
   return (
-    <div className="lg:flex lg:gap-8">
-      {error.status ? toast(error.message || "Error Occured") : ""}
-
-      <DesktopFilterCard />
-
-      <MobileFilterCard />
-
-      <div className="lg:w-4/5">
+    <>
+      <div>
         {errorNoPost ? (
-          <div className="w-full h-full flex items-center justify-center">
+          <div className="w-full h-screen flex items-center justify-center">
             <p>No Post found</p>
           </div>
         ) : (
@@ -71,7 +46,7 @@ export default function AllJobs() {
               </div>
             ) : (
               <>
-                {allJobs.map((e: JobLisitingType) => {
+                {myPostedJobs.map((e: JobLisitingType) => {
                   return (
                     <JobCard
                       key={e.id}
@@ -95,6 +70,6 @@ export default function AllJobs() {
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 }

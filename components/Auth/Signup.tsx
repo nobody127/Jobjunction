@@ -19,7 +19,7 @@ import {
   X,
 } from "lucide-react";
 import { Separator } from "../ui/separator";
-import { CreateUser } from "@/app/actions/signup";
+import { CreateUser } from "@/app/actions/users/signup";
 import Link from "next/link";
 import { FaGoogle, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { toast } from "sonner";

@@ -1,11 +1,11 @@
 "use client";
 
-import { CreateJob } from "@/app/actions/jobs";
+import { CreateJob } from "@/app/actions/posts/jobs";
 import { Button } from "@/components/ui/button";
 import { createJobSchema, createJobSchemaType } from "@/schema/jobs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Briefcase, Building, IndianRupee, Link } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -241,10 +241,10 @@ export default function CreateForm() {
                 {...register("experience_level")}
               >
                 <option value="Fresher">Fresher</option>
-                <option value="0-1">0-1</option>
-                <option value="1+">1+ years</option>
-                <option value="3+">3+ years</option>
-                <option value="5+">5+ years</option>
+                <option value="0-1y">0-1</option>
+                <option value="1y">1+ years</option>
+                <option value="3y">3+ years</option>
+                <option value="5y">5+ years</option>
               </select>
             </div>
             {errors.experience_level?.message && (
