@@ -1,6 +1,6 @@
 "use client";
 
-import { GetUserDetailById } from "@/app/actions/checkUser";
+import { GetUserDetailById } from "@/app/actions/users/checkUser";
 import {
   isProfileVisitorUser,
   refetchAtom,

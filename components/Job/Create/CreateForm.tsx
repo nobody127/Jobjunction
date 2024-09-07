@@ -1,11 +1,11 @@
 "use client";
 
-import { CreateJob } from "@/app/actions/jobs";
+import { CreateJob } from "@/app/actions/posts/jobs";
 import { Button } from "@/components/ui/button";
 import { createJobSchema, createJobSchemaType } from "@/schema/jobs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Briefcase, Building, IndianRupee, Link } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";

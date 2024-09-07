@@ -2,7 +2,7 @@
 
 import JobCard from "@/components/Job/jobCard";
 import { useEffect } from "react";
-import { GetAllPost } from "../actions/jobs";
+import { GetAllPost } from "../actions/posts/jobs";
 import { toast } from "sonner";
 import { GetAllPostResponseType, JobLisitingType } from "@/types/types";
 import MobileFilterCard from "@/components/Job/mobFilterCard";

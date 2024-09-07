@@ -1,6 +1,6 @@
 "use client";
 
-import { GetPostByAuthorId } from "@/app/actions/jobs";
+import { GetPostByAuthorId } from "@/app/actions/posts/jobs";
 import JobCard from "@/components/Job/jobCard";
 import { JobLisitingType } from "@/types/types";
 import { useParams } from "next/navigation";

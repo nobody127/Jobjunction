@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@/auth";
+import { auth, signOut } from "@/auth";
 import prisma from "@/db";
 
 export async function CheckUser() {
@@ -15,7 +15,9 @@ export async function CheckUser() {
       },
     });
 
-    if (!isUser) throw new Error("User Not exist in database");
+    if (!isUser) {
+      return signOut();
+    }
 
     return {
       status: 200,
@@ -32,6 +34,10 @@ export async function CheckUser() {
 
 export async function GetUserDetailById(userId: string) {
   try {
+    const response = await CheckUser();
+
+    if (response.status !== 200) throw new Error(response.message);
+
     const isUser = await prisma.user.findFirst({
       where: {
         id: userId,

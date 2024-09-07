@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/db";
-import { CheckUser } from "./checkUser";
+import { CheckUser } from "../users/checkUser";
 
 export async function HandleBookmakrClick(userId: string, postId: string) {
   try {
@@ -74,6 +74,55 @@ export async function CheckForBookmark(userId: string, postId: string) {
       status: 200,
       message: "Post is Bookmarked",
       data: [],
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: (error as Error).message,
+      data: [],
+    };
+  }
+}
+
+export async function GetBookmarkByUserId(userId: string) {
+  try {
+    const checkForUser = await CheckUser();
+
+    if (checkForUser.status !== 200) throw new Error(checkForUser.message);
+
+    const getUserBookmarks = await prisma.bookmark.findMany({
+      where: {
+        userId: userId,
+      },
+
+      select: {
+        id: true,
+        post: {
+          select: {
+            id: true,
+            apply_link: true,
+            company: true,
+            position: true,
+            role_name: true,
+          },
+        },
+        user: {
+          select: {
+            id: true,
+            avatar: true,
+            username: true,
+          },
+        },
+      },
+    });
+
+    if (!getUserBookmarks || getUserBookmarks.length === 0)
+      throw new Error("No posts found");
+
+    return {
+      status: 200,
+      message: "Bookmarks fetched ",
+      data: getUserBookmarks,
     };
   } catch (error) {
     return {

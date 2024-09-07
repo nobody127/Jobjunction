@@ -146,7 +146,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: "/signin",
   },
 
+  cookies: {
+    sessionToken: {
+      name: "session-token",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: true,
+        maxAge: 60 * 60 * 24 * 1, //1day
+      },
+    },
+  },
   session: {
     strategy: "jwt",
+    maxAge: 60 * 60 * 24 * 3,
   },
 }) satisfies NextConfig;

@@ -51,3 +51,19 @@ export type GetUserDetailByIdType = {
   skills: string[];
   role: string;
 };
+
+export type GetUserBookmarksType = {
+  id: string;
+  post: {
+    id: string;
+    apply_link: string;
+    company: string;
+    position: string;
+    role_name: string;
+  };
+  user: {
+    id: string;
+    avatar: string | null;
+    username: string;
+  };
+};

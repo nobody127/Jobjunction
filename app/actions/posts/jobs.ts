@@ -1,7 +1,7 @@
 "use server";
 
 import { createJobSchema, createJobSchemaType } from "@/schema/jobs";
-import { CheckUser } from "./checkUser";
+import { CheckUser } from "../users/checkUser";
 import prisma from "@/db";
 
 // Create new Jobs
@@ -13,7 +13,7 @@ export async function CreateJob(postdata: createJobSchemaType) {
 
     const response = await CheckUser();
 
-    if (response.status !== 200) throw new Error("User is not logged In");
+    if (response.status !== 200) throw new Error(response.message);
 
     const newJob = await prisma.post.create({
       data: {
@@ -107,6 +107,10 @@ export async function GetAllPost() {
 
 export async function GetPostByAuthorId(authorId: string) {
   try {
+    const response = await CheckUser();
+
+    if (response.status !== 200) throw new Error(response.message);
+
     const getPost = await prisma.post.findMany({
       where: {
         authorId: authorId,
@@ -154,8 +158,10 @@ export async function GetPostByAuthorId(authorId: string) {
 
 export async function DestroyPost(postId: string, authorId: string) {
   try {
-    console.log(postId);
-    console.log(authorId);
+    const response = await CheckUser();
+
+    if (response.status !== 200) throw new Error(response.message);
+
     const isUserAuthor = await prisma.post.findFirst({
       where: {
         id: postId,

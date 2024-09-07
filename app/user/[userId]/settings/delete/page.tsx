@@ -1,9 +1,5 @@
-export default function DestoryAccount({
-  params,
-}: {
-  params: {
-    userId: string;
-  };
-}) {
-  return <div> hi ${params.userId} you can delete Account</div>;
+import DeleteComp from "@/components/User/Tabs/Settings/DeleteComp";
+
+export default function DestoryAccount() {
+  return <DeleteComp />;
 }

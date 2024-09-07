@@ -10,12 +10,15 @@ import {
 import { Ellipsis, Bookmark, X, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Separator } from "../ui/separator";
-import { CheckForBookmark, HandleBookmakrClick } from "@/app/actions/bookmark";
+import {
+  CheckForBookmark,
+  HandleBookmakrClick,
+} from "@/app/actions/posts/bookmark";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { bookmarkedPosts } from "@/store/store";
 import { useRecoilState } from "recoil";
-import { DestroyPost } from "@/app/actions/jobs";
+import { DestroyPost } from "@/app/actions/posts/jobs";
 import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
@@ -126,7 +129,7 @@ export default function MoreOptionDialog({
             </div>
 
             <DialogDescription>
-              <div className=" w-full mb-4  ">
+              <div className=" w-full mb-4 cursor-pointer ">
                 {bookmarking ? (
                   <FaSpinner className="animate-spin mx-auto" />
                 ) : (
@@ -139,7 +142,7 @@ export default function MoreOptionDialog({
                         bookmarked ? "fill-blue-950" : ""
                       }`}
                     />
-                    <p className="text-lg">
+                    <p className="text-md">
                       {bookmarked ? "Unbookmarked" : "Bookmark"}
                     </p>
                   </div>
@@ -158,7 +161,7 @@ export default function MoreOptionDialog({
                       onClick={() => handlePostDelete()}
                     >
                       <Trash2 className="cursor-pointer" />
-                      <p className="text-lg text-red-500">Delete Post</p>
+                      <p className="text-md text-red-500">Delete Post</p>
                     </div>
                   )}
                 </div>

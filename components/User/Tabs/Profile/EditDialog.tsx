@@ -1,6 +1,6 @@
 "use client";
 
-import { UpdateUserInfo } from "@/app/actions/updateUserInfo";
+import { UpdateUserInfo } from "@/app/actions/users/updateUserInfo";
 import {
   AlertDialog,
   AlertDialogContent,

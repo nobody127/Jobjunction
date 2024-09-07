@@ -30,37 +30,73 @@ export default function SidebarComp() {
 
   return (
     <>
-      <Link
-        href={`/user/${session.data?.user.id}/profile`}
-        onClick={() => setActiveTab("profile")}
-        className="min-w-40 text-center"
-      >
-        <p
-          className={` duration-500 ${
-            activeTab === "profile"
-              ? "bg-sideBarBgColor text-sideBarColor w-fit p-2 rounded-full  font-kanit w-full "
-              : ""
-          }`}
+      {isVisitorUser ? (
+        <Link
+          href={`/user/${session.data?.user.id}/profile`}
+          onClick={() => setActiveTab("profile")}
+          className="min-w-40 text-center"
         >
-          My Profile
-        </p>
-      </Link>
+          <p
+            className={` duration-500 ${
+              activeTab === "profile"
+                ? "bg-sideBarBgColor text-sideBarColor w-fit p-2 rounded-full  font-kanit w-full "
+                : ""
+            }`}
+          >
+            My Profile
+          </p>
+        </Link>
+      ) : (
+        <Link
+          href={`/user/${userId}/profile`}
+          onClick={() => setActiveTab("profile")}
+          className="min-w-40 text-center"
+        >
+          <p
+            className={` duration-500 ${
+              activeTab === "profile"
+                ? "bg-sideBarBgColor text-sideBarColor w-fit p-2 rounded-full  font-kanit w-full "
+                : ""
+            }`}
+          >
+            Profile
+          </p>
+        </Link>
+      )}
 
-      <Link
-        href={`/user/${session.data?.user.id}/jobs/me`}
-        onClick={() => setActiveTab("posts")}
-        className="min-w-40 text-center"
-      >
-        <p
-          className={` mt-8  duration-500 ${
-            activeTab === "posts"
-              ? "bg-sideBarBgColor text-sideBarColor w-fit p-2 rounded-full  font-kanit w-full"
-              : ""
-          }`}
+      {isVisitorUser ? (
+        <Link
+          href={`/user/${session.data?.user.id}/jobs/me`}
+          onClick={() => setActiveTab("posts")}
+          className="min-w-40 text-center"
         >
-          Posts
-        </p>
-      </Link>
+          <p
+            className={` mt-8  duration-500 ${
+              activeTab === "posts"
+                ? "bg-sideBarBgColor text-sideBarColor w-fit p-2 rounded-full  font-kanit w-full"
+                : ""
+            }`}
+          >
+            Created Jobs
+          </p>
+        </Link>
+      ) : (
+        <Link
+          href={`/user/${userId}/jobs/me`}
+          onClick={() => setActiveTab("posts")}
+          className="min-w-40 text-center"
+        >
+          <p
+            className={` mt-8  duration-500 ${
+              activeTab === "posts"
+                ? "bg-sideBarBgColor text-sideBarColor w-fit p-2 rounded-full  font-kanit w-full"
+                : ""
+            }`}
+          >
+            Posted Jobs
+          </p>
+        </Link>
+      )}
 
       {isVisitorUser ? (
         <>

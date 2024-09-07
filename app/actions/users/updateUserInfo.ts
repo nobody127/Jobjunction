@@ -52,3 +52,26 @@ export async function UpdateUserInfo(
     };
   }
 }
+
+export async function DeleteUser(userId: string) {
+  try {
+    const response = await CheckUser();
+    if (response.status !== 200) throw new Error(response.message);
+
+    const deltedUser = await prisma.user.delete({
+      where: {
+        id: userId,
+      },
+    });
+    if (!deltedUser) throw new Error("Error while deleting user");
+    return {
+      status: 201,
+      message: "Account Deleted Successfully",
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: (error as Error).message,
+    };
+  }
+}

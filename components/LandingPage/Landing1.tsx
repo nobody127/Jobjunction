@@ -2,19 +2,26 @@
 
 import React from "react";
 import GradualSpacing from "../magicui/gradual-spacing";
-import TextComponent from "../TextComp";
-import { Button } from "../ui/button";
 import { ArrowBigRightDash, Briefcase } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { fraunces } from "@/utils/fonts/font";
 
 export default function LandingPart1() {
   return (
     <div>
-      <GradualSpacing
-        text="Discover, Apply & Grow "
-        className="text-xl sm:text-4xl xl:text-8xl font-kanit mt-28 font-bold break-before"
-      />
+      <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 justify-center">
+        <GradualSpacing
+          duration={2}
+          text="Discover Apply"
+          className={`text-4xl sm:text-5xl  xl:text-8xl font-kanit mt-28 font-bold break-before-auto ${fraunces.className}`}
+        />
+        <GradualSpacing
+          text="Grow"
+          duration={4}
+          className={`text-4xl  sm:text-5xl xl:text-8xl font-kanit sm:mt-28 font-bold break-before-auto ${fraunces.className}`}
+        />
+      </div>
 
       <div className="flex gap-6 w-full mt-12 justify-center">
         <motion.div
