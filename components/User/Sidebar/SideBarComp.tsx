@@ -9,10 +9,14 @@ import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
 export default function SidebarComp() {
+  const { userId }: { userId: string } = useParams();
+
+  useCheckForVisitor(userId);
+
   const [activeTab, setActiveTab] = useState("profile");
   const isVisitorUser = useRecoilValue(isProfileVisitorUser);
+
   const session = useSession();
-  const { userId }: { userId: string } = useParams();
   const pathname = usePathname();
 
   if (!session.data?.user) {
@@ -25,8 +29,6 @@ export default function SidebarComp() {
     if (pathname.includes("jobs/bookmarks")) setActiveTab("bookmark");
     if (pathname.includes("settings/delete")) setActiveTab("destroy");
   }, []);
-
-  useCheckForVisitor(userId);
 
   return (
     <>
