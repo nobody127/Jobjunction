@@ -19,16 +19,16 @@ export default function SidebarComp() {
   const session = useSession();
   const pathname = usePathname();
 
-  if (!session.data?.user) {
-    return <div>No User found</div>;
-  }
-
   useEffect(() => {
     if (pathname.includes("profile")) setActiveTab("profile");
     if (pathname.includes("jobs/me")) setActiveTab("posts");
     if (pathname.includes("jobs/bookmarks")) setActiveTab("bookmark");
     if (pathname.includes("settings/delete")) setActiveTab("destroy");
   }, []);
+
+  if (!session.data?.user) {
+    return <div>No User found</div>;
+  }
 
   return (
     <>
