@@ -19,14 +19,14 @@ export default function SidebarComp() {
     return <div>No User found</div>;
   }
 
-  useCheckForVisitor(userId);
-
   useEffect(() => {
     if (pathname.includes("profile")) setActiveTab("profile");
     if (pathname.includes("jobs/me")) setActiveTab("posts");
     if (pathname.includes("jobs/bookmarks")) setActiveTab("bookmark");
     if (pathname.includes("settings/delete")) setActiveTab("destroy");
   }, []);
+
+  useCheckForVisitor(userId);
 
   return (
     <>
