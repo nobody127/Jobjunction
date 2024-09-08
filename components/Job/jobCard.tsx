@@ -1,8 +1,8 @@
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BadgeIndianRupee, BriefcaseBusiness } from "lucide-react";
@@ -12,6 +12,11 @@ import Link from "next/link";
 import { JobLisitingType } from "@/types/types";
 import { HiExternalLink } from "react-icons/hi";
 import MoreOptionDialog from "./MoreDialog";
+
+import { useEditor, EditorContent } from "@tiptap/react";
+import Document from "@tiptap/extension-document";
+import Paragraph from "@tiptap/extension-paragraph";
+import Text from "@tiptap/extension-text";
 
 export default function JobCard({
   id,
@@ -27,27 +32,38 @@ export default function JobCard({
   experience_level,
   apply_link,
 }: JobLisitingType) {
+  const editor = useEditor({
+    content: role_description.slice(0, 100),
+    editable: false,
+    editorProps: {
+      attributes: {
+        class: "outline-none mt-4",
+      },
+    },
+    extensions: [Document, Paragraph, Text],
+  });
+
   return (
     <div className="flex flex-col gap-8 mt-4 lg:mt-0 p-4 md:p-6 shadow-lg mx-auto w-11/12  lg:w-3/4 bg-white rounded-md border-2">
       {/* first section  */}
 
       <div className="flex justify-between">
-        <HoverCard>
-          <HoverCardTrigger>
+        <Popover>
+          <PopoverTrigger>
             <Avatar className="cursor-pointer size-8 md:size-10">
               <AvatarImage
                 src={author.avatar ? author.avatar : "Images/avatar.png"}
               />
               <AvatarFallback>CO</AvatarFallback>
             </Avatar>
-          </HoverCardTrigger>
-          <HoverCardContent className="flex gap-2 items-center">
+          </PopoverTrigger>
+          <PopoverContent className="flex gap-2 items-center flex-wrap  overflow-x-scroll no-scrollbar">
             <p>{author.username}</p>
             <Link href={`/user/${author.id}/profile`}>
               <HiExternalLink />
             </Link>
-          </HoverCardContent>
-        </HoverCard>
+          </PopoverContent>
+        </Popover>
 
         <div>
           <p className="text-radio text-md md:text-2xl text-black tracking-wide font-bold">
@@ -62,9 +78,7 @@ export default function JobCard({
       {/* second section  */}
 
       <div>
-        <p className="text-gray-500  break-words  ">
-          {role_description.slice(0, 100)}
-        </p>
+        <EditorContent editor={editor} />
 
         <div className="flex w-fit gap-4 mt-6 flex-wrap">
           <Button className="text-xs text-black bg-gray-300 hover:bg-gray-400 hover:text-white">

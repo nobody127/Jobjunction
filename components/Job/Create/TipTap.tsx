@@ -18,6 +18,7 @@ import CharacterCount from "@tiptap/extension-character-count";
 import History from "@tiptap/extension-history";
 import { Color } from "@tiptap/extension-color";
 import TextStyle from "@tiptap/extension-text-style";
+
 import {
   Highlighter,
   LucideHeading1,
@@ -26,12 +27,14 @@ import {
   Strikethrough,
   Undo,
 } from "lucide-react";
+
 import {
   MdFormatBold,
   MdFormatItalic,
   MdFormatListBulleted,
   MdFormatUnderlined,
 } from "react-icons/md";
+
 import { IoCodeSlash } from "react-icons/io5";
 
 const limit = 5000;
@@ -106,7 +109,6 @@ const Tiptap = ({ className, name, setValue }: any) => {
     : 0;
 
   function handleColor(e: any) {
-    console.log(e.target.value);
     editor?.commands.setColor(e.target.value);
   }
   return (

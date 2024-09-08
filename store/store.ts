@@ -46,3 +46,8 @@ export const bookmarkedPosts = atomFamily<boolean, string>({
   key: "bookmarkedPosts",
   default: false,
 });
+
+export const filterMobSheet = atom({
+  key: "filterMobSheet",
+  default: false,
+});

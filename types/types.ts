@@ -60,10 +60,10 @@ export type GetUserBookmarksType = {
     company: string;
     position: string;
     role_name: string;
-  };
-  user: {
-    id: string;
-    avatar: string | null;
-    username: string;
+    author: {
+      id: string;
+      avatar: string | null;
+      username: string;
+    };
   };
 };
