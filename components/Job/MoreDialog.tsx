@@ -37,7 +37,10 @@ export default function MoreOptionDialog({
   });
   const [deleting, setDeleting] = useState(false);
   const [deleted, setDeleted] = useState(false);
-  const [deleteError, setDeleteError] = useState(false);
+  const [deleteError, setDeleteError] = useState({
+    status: false,
+    message: "",
+  });
   const [bookmarking, setBookmarking] = useState(false);
 
   const session: any = useSession();
@@ -86,9 +89,15 @@ export default function MoreOptionDialog({
       setModalOpen(false);
       router.refresh();
     } catch (error) {
-      setDeleteError(true);
+      setDeleteError({
+        status: true,
+        message: (error as Error).message,
+      });
       setTimeout(() => {
-        setDeleteError(false);
+        setDeleteError({
+          status: false,
+          message: "",
+        });
       }, 1000);
     } finally {
       setDeleting(false);
@@ -113,7 +122,7 @@ export default function MoreOptionDialog({
     <>
       {showBookmarkToast.status && toast(showBookmarkToast.message)}
       {deleted && toast("Deleted Successfully")}
-      {deleteError && toast("Some Error Occured")}
+      {deleteError.status && toast(deleteError.message)}
 
       <Dialog open={modalOpen}>
         <DialogTrigger>
@@ -151,7 +160,8 @@ export default function MoreOptionDialog({
 
               <Separator />
 
-              {session.data.user.id === authorId ? (
+              {session.data.user.id === authorId ||
+              session.data.user.role === "ADMIN" ? (
                 <div className=" w-full my-4  ">
                   {deleting ? (
                     <FaSpinner className="animate-spin mx-auto" />

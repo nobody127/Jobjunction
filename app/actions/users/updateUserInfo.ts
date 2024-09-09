@@ -58,12 +58,22 @@ export async function DeleteUser(userId: string) {
     const response = await CheckUser();
     if (response.status !== 200) throw new Error(response.message);
 
-    const deltedUser = await prisma.user.delete({
+    const isAdmin = await prisma.user.findFirst({
+      where: {
+        id: response.userId,
+        role: "ADMIN",
+      },
+    });
+
+    if (userId !== response.userId && !isAdmin)
+      throw new Error("You don't have the access");
+
+    const deletedUser = await prisma.user.delete({
       where: {
         id: userId,
       },
     });
-    if (!deltedUser) throw new Error("Error while deleting user");
+    if (!deletedUser) throw new Error("Error while deleting user");
     return {
       status: 201,
       message: "Account Deleted Successfully",

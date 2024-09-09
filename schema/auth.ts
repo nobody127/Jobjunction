@@ -53,6 +53,14 @@ export const userProfileUpdateSchema = z.object({
   twitter_url: z.string().optional(),
 });
 
+export const deleteUserSchema = z.object({
+  random: z
+    .string({ message: "Required" })
+    .min(1, { message: "Min 1 char long" })
+    .max(8, { message: "Can't be more long" }),
+});
+
 export type SignupInputType = z.infer<typeof signupSchema>;
 export type SigninInputType = z.infer<typeof signinSchema>;
 export type userProfileUpdateType = z.infer<typeof userProfileUpdateSchema>;
+export type deleteUserType = z.infer<typeof deleteUserSchema>;

@@ -44,7 +44,7 @@ export default function JobCard({
   });
 
   return (
-    <div className="flex flex-col gap-8 mt-4 lg:mt-0 p-4 md:p-6 shadow-lg mx-auto w-11/12  lg:w-3/4 bg-white rounded-md border-2">
+    <div className="flex flex-col gap-8 mt-4 lg:mt-0 p-4 md:p-6 shadow-lg mx-auto w-11/12  lg:w-3/4 bg-white rounded-md border-2 ">
       {/* first section  */}
 
       <div className="flex justify-between">
@@ -52,7 +52,7 @@ export default function JobCard({
           <PopoverTrigger>
             <Avatar className="cursor-pointer size-8 md:size-10">
               <AvatarImage
-                src={author.avatar ? author.avatar : "Images/avatar.png"}
+                src={author.avatar ? author.avatar : "/Images/avatar.png"}
               />
               <AvatarFallback>CO</AvatarFallback>
             </Avatar>

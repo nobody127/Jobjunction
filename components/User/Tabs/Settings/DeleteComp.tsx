@@ -7,8 +7,6 @@ import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -20,8 +18,21 @@ import { signOut, useSession } from "next-auth/react";
 import { DeleteUser } from "@/app/actions/users/updateUserInfo";
 import { FaSpinner } from "react-icons/fa";
 import { toast } from "sonner";
-
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { poppins } from "@/utils/fonts/font";
+import Randomstring from "randomstring";
+import z from "zod";
+import { deleteUserSchema, deleteUserType } from "@/schema/auth";
 export default function DeleteComp() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<deleteUserType>({
+    resolver: zodResolver(deleteUserSchema),
+  });
+
   const session = useSession();
   const { userId }: { userId: string } = useParams();
   const isVisitorUser = useRecoilValue(isProfileVisitorUser);
@@ -29,18 +40,29 @@ export default function DeleteComp() {
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [inputError, setInputError] = useState(false);
+  const [randomString, setRandomString] = useState<string>(
+    Randomstring.generate(8)
+  );
 
   useEffect(() => {
     if (!isVisitorUser) redirect(`/user/${userId}/profile`);
   }, []);
 
-  if (!session.data?.user || session.data.user === undefined) {
-    return <div>Error Found</div>;
-  }
-  async function handleDeleteAccount() {
+  async function handleDeleteAccount(data: deleteUserType) {
     setLoading(true);
     try {
       if (!session.data?.user?.id) throw new Error("No user loggedin");
+
+      if (data.random !== randomString) {
+        setInputError(true);
+        setTimeout(() => {
+          setInputError(false);
+        }, 500);
+        setRandomString(Randomstring.generate(8));
+        return;
+      }
+
       const response = await DeleteUser(session.data?.user.id);
       if (response.status !== 201) throw new Error(response.message);
       setModalOpen(false);
@@ -55,6 +77,10 @@ export default function DeleteComp() {
     }
   }
 
+  if (!session.data?.user || session.data.user === undefined) {
+    return <div>Error Found</div>;
+  }
+
   return (
     <div>
       {error ? toast("Error Occured") : ""}
@@ -67,29 +93,61 @@ export default function DeleteComp() {
         </p>
         <AlertDialog open={modalOpen}>
           <AlertDialogTrigger className="mt-8">
-            <Button className="bg-red-600" onClick={() => setModalOpen(true)}>
+            <div
+              className="bg-red-500 text-black   py-2 px-4 cursor-pointer rounded-md text-white "
+              onClick={() => setModalOpen(true)}
+            >
               Delete
-            </Button>
+            </div>
           </AlertDialogTrigger>
           <AlertDialogContent className="max-w-[300px] rounded-md md:max-w-[450px]">
             <AlertDialogHeader>
               <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
+                <p>
+                  This action cannot be undone. This will permanently delete
+                  your account and remove your data from our servers.
+                </p>
+
+                <form
+                  className="mt-6"
+                  onSubmit={handleSubmit(handleDeleteAccount)}
+                >
+                  <label
+                    className={`${poppins.className} text-black `}
+                    htmlFor="random"
+                  >
+                    Type <span className="text-red-500">{randomString}</span>
+                  </label>
+                  <input
+                    {...register("random")}
+                    id="random"
+                    className="p-2 outline-none border-2 border-slate-200 w-full rounded-md"
+                  />
+                  {errors.random?.message && (
+                    <p className="mt-2 text-red-500">
+                      {errors.random?.message}
+                    </p>
+                  )}
+                  {inputError && (
+                    <p className="mt-2 text-red-500">Mismatched , Try again</p>
+                  )}
+
+                  <div className="flex gap-2 items-baseline">
+                    <Button disabled={loading} className="mt-4">
+                      {loading ? <FaSpinner className="animate-spin" /> : "Yes"}
+                    </Button>
+
+                    <div
+                      className="bg-transparent text-black hover:bg-transparent border-2 border-slate-500 py-2 px-4 cursor-pointer rounded-md"
+                      onClick={() => setModalOpen(false)}
+                    >
+                      <p>No</p>
+                    </div>
+                  </div>
+                </form>
               </AlertDialogDescription>
             </AlertDialogHeader>
-            <AlertDialogFooter className="flex  gap-2 ">
-              <Button onClick={() => handleDeleteAccount()} disabled={loading}>
-                {loading ? <FaSpinner className="animate-spin" /> : "Yes"}
-              </Button>
-              <Button
-                onClick={() => setModalOpen(false)}
-                className="bg-transparent text-black hover:bg-transparent border-2 border-slate-500"
-              >
-                No
-              </Button>
-            </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
       </div>

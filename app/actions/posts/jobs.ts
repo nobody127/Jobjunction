@@ -169,14 +169,19 @@ export async function DestroyPost(postId: string, authorId: string) {
       },
     });
 
-    console.log(isUserAuthor);
+    const isAdmin = await prisma.user.findFirst({
+      where: {
+        id: authorId,
+        role: "ADMIN",
+      },
+    });
 
-    if (!isUserAuthor) throw new Error("User is not the author of the post");
+    if (!isUserAuthor && !isAdmin)
+      throw new Error("User is not the author of the post");
 
     const deletedPost = await prisma.post.delete({
       where: {
         id: postId,
-        authorId: authorId,
       },
     });
 

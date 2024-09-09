@@ -88,7 +88,7 @@ export default function SavedJobsComp() {
                                   src={
                                     e.post.author.avatar
                                       ? e.post.author.avatar
-                                      : "Images/avatar.png"
+                                      : "/Images/avatar.png"
                                   }
                                 />
                                 <AvatarFallback>CO</AvatarFallback>

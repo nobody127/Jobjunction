@@ -1,9 +1,5 @@
-import Navbar from "../Navbar/Navbar";
+import AllJobsComp from "@/components/Job/Jobs";
 
 export default function AdminComp() {
-  return (
-    <div>
-      <Navbar />
-    </div>
-  );
+  return <AllJobsComp />;
 }

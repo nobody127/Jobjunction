@@ -67,3 +67,11 @@ export type GetUserBookmarksType = {
     };
   };
 };
+
+export type GetAllUserType = {
+  id: string;
+  username: string;
+  role: "ADMIN" | "USER";
+  avatar: string | null;
+  email: string;
+};
