@@ -37,7 +37,6 @@ export async function CreateUser(data: SignupInputType) {
         instagram_url: data.instagram_url,
         linkedin_url: data.linkedin_url,
         twitter_url: data.twitter_url,
-        skills: data.skills,
         provider: "credentials",
       },
 

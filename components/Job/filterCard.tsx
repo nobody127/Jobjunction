@@ -2,12 +2,14 @@
 
 import {
   allJobListings,
+  filterMobSheet,
   joblistingError,
   universalLoader,
 } from "@/store/store";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
+import { Button } from "../ui/button";
 
 const experienceValues = ["Fresher", "0-1y", "1y", "3y", "5y"];
 const jobTypeValues = ["Fulltime", "Internship", "Contract", "Freelance"];
@@ -18,6 +20,8 @@ export default function FilterSideBar() {
   const setAllJobs = useSetRecoilState(allJobListings);
   const setLoading = useSetRecoilState(universalLoader);
   const setError = useSetRecoilState(joblistingError);
+  const setMobSheetOpen = useSetRecoilState(filterMobSheet);
+  const [disableApply, setDisableApply] = useState(true);
 
   const [filter, setFilter] = useState<{
     experience: any[];
@@ -39,8 +43,10 @@ export default function FilterSideBar() {
       job: selectedJob.filter((e) => (e ? e : null)),
       location: selectedLocation.filter((e) => (e ? e : null)),
     };
-    if (JSON.stringify(newFilter) !== JSON.stringify(filter))
+    if (JSON.stringify(newFilter) !== JSON.stringify(filter)) {
       setFilter(newFilter);
+      setDisableApply(false);
+    }
   }, [selectedExperience, selectedJob, selectedLocation]);
 
   const callBackend = async () => {
@@ -63,68 +69,76 @@ export default function FilterSideBar() {
     }
   };
 
-  let timer: any;
-
-  useEffect(() => {
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(() => {
-      callBackend();
-    }, 1200);
-
-    return () => clearTimeout(timer);
-  }, [filter]);
-
   return (
     <div>
-      <div className="py-4 px-2 lg:py-8 lg:px-6">
+      <div className="py-4 px-2 lg:p-6">
         <p className="font-bold text-left">Experience Level</p>
-        {experienceValues.map((e: string, i: number) => {
-          return (
-            <div className="flex gap-2 mt-4" key={i}>
-              <input
-                type="checkbox"
-                value={e}
-                {...register(e)}
-                className="accent-green-700"
-              />
-              <label>{e}</label>
-            </div>
-          );
-        })}
+        <div className="grid grid-cols-2  gap-x-8">
+          {experienceValues.map((e: string, i: number) => {
+            return (
+              <div className="flex gap-2 mt-4" key={i}>
+                <input
+                  type="checkbox"
+                  value={e}
+                  {...register(e)}
+                  className="accent-green-700"
+                />
+                <label>{e}</label>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
-      <div className="py-4 px-2 lg:py-8 lg:px-6">
+      <div className="py-4 px-2 lg:p-6">
         <p className="font-bold text-left">Job Type</p>
-        {jobTypeValues.map((e: string, i: number) => {
-          return (
-            <div className="flex gap-2 mt-4" key={i}>
-              <input
-                type="checkbox"
-                value={e}
-                {...register(e)}
-                className="accent-green-700"
-              />
-              <label>{e}</label>
-            </div>
-          );
-        })}
+        <div className="grid grid-cols-2  gap-x-8">
+          {jobTypeValues.map((e: string, i: number) => {
+            return (
+              <div className="flex gap-2 mt-4" key={i}>
+                <input
+                  type="checkbox"
+                  value={e}
+                  {...register(e)}
+                  className="accent-green-700"
+                />
+                <label>{e}</label>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
-      <div className="py-4 px-2 lg:py-8 lg:px-6">
+      <div className="py-4 px-2 lg:p-6">
         <p className="font-bold text-left">Location Wise</p>
-        {locationTypeValue.map((e: string, i: number) => {
-          return (
-            <div className="flex gap-2 mt-4" key={i}>
-              <input
-                type="checkbox"
-                value={e}
-                {...register(e)}
-                className="accent-green-700"
-              />
-              <label>{e}</label>
-            </div>
-          );
-        })}
+        <div className="grid grid-cols-2  gap-x-8">
+          {locationTypeValue.map((e: string, i: number) => {
+            return (
+              <div className="flex gap-2 mt-4" key={i}>
+                <input
+                  type="checkbox"
+                  value={e}
+                  {...register(e)}
+                  className="accent-green-700"
+                />
+                <label>{e}</label>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="w-full px-4">
+        <Button
+          className="w-full mt-4"
+          onClick={() => {
+            setMobSheetOpen(false);
+            callBackend();
+          }}
+          disabled={disableApply}
+        >
+          Apply
+        </Button>
       </div>
     </div>
   );

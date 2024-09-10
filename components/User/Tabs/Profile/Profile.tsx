@@ -44,7 +44,6 @@ export default function UserProfileDashboard() {
     bio: null,
     avatar: null,
     createdAt: new Date(Date.now()),
-    skills: [],
     role: "",
   });
 
@@ -123,7 +122,7 @@ export default function UserProfileDashboard() {
       <div className="flex justify-between items-center border-2 border-slate-200 p-4 rounded-xl mt-12">
         <div className="flex gap-6 items-center">
           <Image
-            src={user.avatar || ""}
+            src={user.avatar || "/Images/avatar.png"}
             width={100}
             height={100}
             alt="Picture of the author"

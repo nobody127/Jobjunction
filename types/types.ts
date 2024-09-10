@@ -30,6 +30,7 @@ export type JobLisitingType = {
     id: string;
     avatar: string | null;
     username: string;
+    role: "ADMIN" | "USER";
   };
 };
 
@@ -48,7 +49,6 @@ export type GetUserDetailByIdType = {
   bio: string | null;
   avatar: string | null;
   createdAt: Date;
-  skills: string[];
   role: string;
 };
 
@@ -60,10 +60,18 @@ export type GetUserBookmarksType = {
     company: string;
     position: string;
     role_name: string;
+    author: {
+      id: string;
+      avatar: string | null;
+      username: string;
+    };
   };
-  user: {
-    id: string;
-    avatar: string | null;
-    username: string;
-  };
+};
+
+export type GetAllUserType = {
+  id: string;
+  username: string;
+  role: "ADMIN" | "USER";
+  avatar: string | null;
+  email: string;
 };

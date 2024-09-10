@@ -104,13 +104,13 @@ export async function GetBookmarkByUserId(userId: string) {
             company: true,
             position: true,
             role_name: true,
-          },
-        },
-        user: {
-          select: {
-            id: true,
-            avatar: true,
-            username: true,
+            author: {
+              select: {
+                id: true,
+                avatar: true,
+                username: true,
+              },
+            },
           },
         },
       },

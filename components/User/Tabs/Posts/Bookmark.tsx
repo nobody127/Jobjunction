@@ -86,17 +86,17 @@ export default function SavedJobsComp() {
                               <Avatar className="cursor-pointer size-8 md:size-10">
                                 <AvatarImage
                                   src={
-                                    e.user.avatar
-                                      ? e.user.avatar
-                                      : "Images/avatar.png"
+                                    e.post.author.avatar
+                                      ? e.post.author.avatar
+                                      : "/Images/avatar.png"
                                   }
                                 />
                                 <AvatarFallback>CO</AvatarFallback>
                               </Avatar>
                             </HoverCardTrigger>
                             <HoverCardContent className="flex gap-2 items-center">
-                              <p>{e.user.username}</p>
-                              <Link href={`/user/${e.user.id}/profile`}>
+                              <p>{e.post.author.username}</p>
+                              <Link href={`/user/${e.post.author.id}/profile`}>
                                 <HiExternalLink />
                               </Link>
                             </HoverCardContent>
@@ -114,7 +114,7 @@ export default function SavedJobsComp() {
 
                         <MoreOptionDialog
                           postId={e.post.id}
-                          authorId={e.user.id}
+                          authorId={e.post.author.id}
                         />
                       </div>
                     );

@@ -21,7 +21,7 @@ export default function Profile() {
       <DropdownMenu>
         <DropdownMenuTrigger className="outline-none">
           <img
-            src={imageUrl || "Images/avatar.png"}
+            src={imageUrl || "/Images/avatar.png"}
             alt=""
             className="w-8 h-8 md:w-12 md:h-12 rounded-full shadow-md"
           />

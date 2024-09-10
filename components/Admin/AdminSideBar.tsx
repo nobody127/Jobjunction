@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Sheet,
   SheetContent,
@@ -7,15 +8,16 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Tally3 } from "lucide-react";
-import SidebarComp from "./SideBarComp";
 import { useState } from "react";
 
-export default function UserDashboardSidebar() {
+import AdminSideBarComp from "@/components/Admin/AdminSideBarComp";
+
+export default function AdminSideBar() {
   const [sheetOpen, setSheetOpen] = useState(false);
   return (
     <>
       <div className=" border-r-2 border-slate-200 hidden md:block min-h-screen">
-        <SidebarComp />
+        <AdminSideBarComp />
       </div>
 
       <div className="block md:hidden">
@@ -26,7 +28,7 @@ export default function UserDashboardSidebar() {
           <SheetContent side={"left"} onClick={() => setSheetOpen(false)}>
             <SheetHeader>
               <SheetDescription className="mt-8">
-                <SidebarComp />
+                <AdminSideBarComp />
               </SheetDescription>
             </SheetHeader>
           </SheetContent>

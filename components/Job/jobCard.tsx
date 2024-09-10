@@ -1,17 +1,18 @@
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BadgeIndianRupee, BriefcaseBusiness } from "lucide-react";
 import { Button } from "../ui/button";
-import { TbHandClick } from "react-icons/tb";
 import Link from "next/link";
 import { JobLisitingType } from "@/types/types";
 import { HiExternalLink } from "react-icons/hi";
 import MoreOptionDialog from "./MoreDialog";
+
+import JobSheetComp from "./JobSheet";
 
 export default function JobCard({
   id,
@@ -28,26 +29,26 @@ export default function JobCard({
   apply_link,
 }: JobLisitingType) {
   return (
-    <div className="flex flex-col gap-8 mt-4 lg:mt-0 p-4 md:p-6 shadow-lg mx-auto w-11/12  lg:w-3/4 bg-white rounded-md border-2">
+    <div className="flex flex-col gap-4 mt-4 md:mt-0 p-4 md:p-6 shadow-lg mx-auto w-11/12  lg:w-3/4 bg-white rounded-md border-2 ">
       {/* first section  */}
 
       <div className="flex justify-between">
-        <HoverCard>
-          <HoverCardTrigger>
+        <Popover>
+          <PopoverTrigger>
             <Avatar className="cursor-pointer size-8 md:size-10">
               <AvatarImage
-                src={author.avatar ? author.avatar : "Images/avatar.png"}
+                src={author.avatar ? author.avatar : "/Images/avatar.png"}
               />
               <AvatarFallback>CO</AvatarFallback>
             </Avatar>
-          </HoverCardTrigger>
-          <HoverCardContent className="flex gap-2 items-center">
+          </PopoverTrigger>
+          <PopoverContent className="flex gap-2 items-center flex-wrap  overflow-x-scroll no-scrollbar">
             <p>{author.username}</p>
             <Link href={`/user/${author.id}/profile`}>
               <HiExternalLink />
             </Link>
-          </HoverCardContent>
-        </HoverCard>
+          </PopoverContent>
+        </Popover>
 
         <div>
           <p className="text-radio text-md md:text-2xl text-black tracking-wide font-bold">
@@ -62,10 +63,6 @@ export default function JobCard({
       {/* second section  */}
 
       <div>
-        <p className="text-gray-500  break-words  ">
-          {role_description.slice(0, 100)}
-        </p>
-
         <div className="flex w-fit gap-4 mt-6 flex-wrap">
           <Button className="text-xs text-black bg-gray-300 hover:bg-gray-400 hover:text-white">
             {location}
@@ -83,7 +80,7 @@ export default function JobCard({
 
       {/* third section  */}
 
-      <div className="flex flex-col gap-8 sm:flex-row  justify-between">
+      <div className="flex flex-wrap gap-4 justify-between items-center">
         <div className="flex gap-2">
           <BadgeIndianRupee />
           <p>
@@ -95,12 +92,21 @@ export default function JobCard({
           <BriefcaseBusiness />
           <p>{experience_level}</p>
         </div>
-        <Link href={apply_link}>
-          <Button className="bg-white text-black border-2 border-b-8 border-r-8 border-black hover:bg-white flex gap-2">
-            <p>Apply Now</p>
-            <TbHandClick className="size-4" />
-          </Button>
-        </Link>
+
+        <JobSheetComp
+          id={id}
+          author={author}
+          position={position}
+          company={company}
+          role_description={role_description}
+          job_type={job_type}
+          location={location}
+          role_name={role_name}
+          salary_min={salary_min}
+          salary_max={salary_max}
+          experience_level={experience_level}
+          apply_link={apply_link}
+        />
       </div>
     </div>
   );

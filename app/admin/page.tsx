@@ -1,9 +1,5 @@
-"use client";
-
-import { useSession } from "next-auth/react";
+import AdminComp from "@/components/Admin/AdminComp";
 
 export default function Admin() {
-  const session = useSession();
-  console.log(session);
-  return <div>Admin page</div>;
+  return <AdminComp />;
 }

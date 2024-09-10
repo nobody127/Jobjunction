@@ -32,6 +32,8 @@ export async function CheckUser() {
   }
 }
 
+//Get User by id
+
 export async function GetUserDetailById(userId: string) {
   try {
     const response = await CheckUser();
@@ -52,7 +54,6 @@ export async function GetUserDetailById(userId: string) {
         bio: true,
         avatar: true,
         createdAt: true,
-        skills: true,
         role: true,
       },
     });
@@ -69,6 +70,54 @@ export async function GetUserDetailById(userId: string) {
       status: 404,
       message: error.message,
       data: null,
+    };
+  }
+}
+
+//Get all user for admin
+
+export async function GetAllUserAdmin(userId: string) {
+  try {
+    const response = await CheckUser();
+
+    if (response.status !== 200) throw new Error(response.message);
+
+    const isAdmin = await prisma.user.findFirst({
+      where: {
+        id: userId,
+        role: "ADMIN",
+      },
+    });
+
+    if (!isAdmin) throw new Error("You are not admin");
+
+    const getAllUser = await prisma.user.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+
+      select: {
+        id: true,
+        username: true,
+        role: true,
+        avatar: true,
+        email: true,
+      },
+    });
+
+    if (!getAllUser || getAllUser.length === 0)
+      throw new Error("No user found");
+
+    return {
+      status: 200,
+      message: "Users fetched",
+      data: getAllUser,
+    };
+  } catch (error) {
+    return {
+      status: 404,
+      message: "Users fetched",
+      data: [],
     };
   }
 }
