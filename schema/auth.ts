@@ -26,7 +26,6 @@ export const signupSchema = z.object({
   instagram_url: z.string().optional(),
   linkedin_url: z.string().optional(),
   twitter_url: z.string().optional(),
-  skills: z.string().array().nonempty({ message: "Must select one" }),
 });
 
 export const signinSchema = z.object({

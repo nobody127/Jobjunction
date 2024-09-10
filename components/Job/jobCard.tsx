@@ -7,16 +7,12 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BadgeIndianRupee, BriefcaseBusiness } from "lucide-react";
 import { Button } from "../ui/button";
-import { TbHandClick } from "react-icons/tb";
 import Link from "next/link";
 import { JobLisitingType } from "@/types/types";
 import { HiExternalLink } from "react-icons/hi";
 import MoreOptionDialog from "./MoreDialog";
 
-import { useEditor, EditorContent } from "@tiptap/react";
-import Document from "@tiptap/extension-document";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
+import JobSheetComp from "./JobSheet";
 
 export default function JobCard({
   id,
@@ -32,19 +28,8 @@ export default function JobCard({
   experience_level,
   apply_link,
 }: JobLisitingType) {
-  const editor = useEditor({
-    content: role_description.slice(0, 100),
-    editable: false,
-    editorProps: {
-      attributes: {
-        class: "outline-none mt-4",
-      },
-    },
-    extensions: [Document, Paragraph, Text],
-  });
-
   return (
-    <div className="flex flex-col gap-8 mt-4 lg:mt-0 p-4 md:p-6 shadow-lg mx-auto w-11/12  lg:w-3/4 bg-white rounded-md border-2 ">
+    <div className="flex flex-col gap-4 mt-4 md:mt-0 p-4 md:p-6 shadow-lg mx-auto w-11/12  lg:w-3/4 bg-white rounded-md border-2 ">
       {/* first section  */}
 
       <div className="flex justify-between">
@@ -78,8 +63,6 @@ export default function JobCard({
       {/* second section  */}
 
       <div>
-        <EditorContent editor={editor} />
-
         <div className="flex w-fit gap-4 mt-6 flex-wrap">
           <Button className="text-xs text-black bg-gray-300 hover:bg-gray-400 hover:text-white">
             {location}
@@ -97,7 +80,7 @@ export default function JobCard({
 
       {/* third section  */}
 
-      <div className="flex flex-col gap-8 sm:flex-row  justify-between">
+      <div className="flex flex-wrap gap-4 justify-between items-center">
         <div className="flex gap-2">
           <BadgeIndianRupee />
           <p>
@@ -109,12 +92,21 @@ export default function JobCard({
           <BriefcaseBusiness />
           <p>{experience_level}</p>
         </div>
-        <Link href={apply_link}>
-          <Button className="bg-white text-black border-2 border-b-8 border-r-8 border-black hover:bg-white flex gap-2">
-            <p>Apply Now</p>
-            <TbHandClick className="size-4" />
-          </Button>
-        </Link>
+
+        <JobSheetComp
+          id={id}
+          author={author}
+          position={position}
+          company={company}
+          role_description={role_description}
+          job_type={job_type}
+          location={location}
+          role_name={role_name}
+          salary_min={salary_min}
+          salary_max={salary_max}
+          experience_level={experience_level}
+          apply_link={apply_link}
+        />
       </div>
     </div>
   );

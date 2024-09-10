@@ -144,6 +144,7 @@ export default function CreateForm() {
               register={register}
               name="role_description"
               setValue={setValue}
+              edit={true}
             />
 
             {errors.role_description?.message && (

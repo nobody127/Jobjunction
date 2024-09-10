@@ -54,7 +54,6 @@ export async function GetUserDetailById(userId: string) {
         bio: true,
         avatar: true,
         createdAt: true,
-        skills: true,
         role: true,
       },
     });

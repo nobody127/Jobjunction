@@ -44,7 +44,6 @@ export default function UserProfileDashboard() {
     bio: null,
     avatar: null,
     createdAt: new Date(Date.now()),
-    skills: [],
     role: "",
   });
 

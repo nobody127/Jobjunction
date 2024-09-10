@@ -30,6 +30,7 @@ export type JobLisitingType = {
     id: string;
     avatar: string | null;
     username: string;
+    role: "ADMIN" | "USER";
   };
 };
 
@@ -48,7 +49,6 @@ export type GetUserDetailByIdType = {
   bio: string | null;
   avatar: string | null;
   createdAt: Date;
-  skills: string[];
   role: string;
 };
 

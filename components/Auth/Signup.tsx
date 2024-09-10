@@ -82,7 +82,6 @@ export default function SignupForm() {
   const filedValues = [
     ["username", "email", "password"],
     ["bio", "instagram_url", "linkedin_url", "twitter_url"],
-    ["skills"],
   ];
 
   async function next() {
@@ -92,8 +91,8 @@ export default function SignupForm() {
 
     if (!output) return;
 
-    if (currentIndex > -1 && currentIndex < 3) {
-      if (currentIndex === 2) {
+    if (currentIndex > -1 && currentIndex < 2) {
+      if (currentIndex === 1) {
         return await handleSubmit(onSubmit)();
       }
       setCurrentIndex((prev) => prev + 1);
@@ -101,25 +100,13 @@ export default function SignupForm() {
   }
 
   async function handleNext() {
-    if (currentIndex >= 2) return;
+    if (currentIndex >= 1) return;
     setCurrentIndex((prev) => prev + 1);
   }
 
   async function handlePrevious() {
     if (currentIndex <= 0) return;
     setCurrentIndex((prev) => prev - 1);
-  }
-
-  function handleInterestChange(e: React.ChangeEvent<HTMLSelectElement>): void {
-    setItems((prev: string[] | undefined) => {
-      if (prev) {
-        const isInArray = prev.indexOf(e.target.value);
-        if (isInArray === -1) {
-          return [...prev, e.target.value];
-        }
-        return prev;
-      }
-    });
   }
 
   function deleteField(value: string) {
@@ -150,7 +137,7 @@ export default function SignupForm() {
           ) : (
             ""
           )}
-          <p className="text-gray-600 mb-6">Step {currentIndex + 1} / 3</p>
+          <p className="text-gray-600 mb-6">Step {currentIndex + 1} / 2</p>
           {currentIndex >= 0 ? (
             <ChevronRight className="cursor-pointer" onClick={handleNext} />
           ) : (
@@ -302,71 +289,12 @@ export default function SignupForm() {
             ""
           )}
 
-          {currentIndex === 2 ? (
-            <div className="mt-8 ">
-              {/* <p className="text-lg font-bold">Interested Fields</p> */}
-              <select
-                {...register("skills")}
-                multiple
-                className="w-full border-2 rounded-lg border-black no-scrollbar"
-                onChange={handleInterestChange}
-              >
-                <option value={"reactjs"} className="mt-4">
-                  Reactjs
-                </option>
-                <option value={"nextjs"} className="mt-4">
-                  Nextjs
-                </option>
-                <option value={"javascript"} className="mt-4">
-                  Javascript
-                </option>
-                <option value={"typescript"} className="mt-4">
-                  Typescript
-                </option>
-                <option value={"express"} className="mt-4">
-                  Express
-                </option>
-                <option value={"nodejs"} className="mt-4">
-                  Nodejs
-                </option>
-                <option value="mongodb" className="mt-4">
-                  Mongodb
-                </option>
-              </select>
-
-              {errors.skills?.message && (
-                <p className="text-red-500">{errors.skills?.message}</p>
-              )}
-
-              <div className="flex gap-4 flex-wrap mt-4">
-                {items?.map((e: string, i: number) => {
-                  return (
-                    <div
-                      className=" bg-gray-300 rounded-full p-2 w-fit flex items-center gap-2"
-                      key={i}
-                    >
-                      <p>{e}</p>
-                      <X
-                        className="cursor-pointer"
-                        onClick={() => {
-                          deleteField(e);
-                        }}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ) : (
-            ""
-          )}
-
           <Button
             onClick={next}
             className="flex mt-4 ml-auto"
             disabled={submitting}
           >
-            {currentIndex === 2 ? (
+            {currentIndex === 1 ? (
               <div>
                 {submitting ? (
                   <TbFidgetSpinner className="animate-spin text-2xl " />

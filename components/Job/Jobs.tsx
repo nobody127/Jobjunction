@@ -13,6 +13,15 @@ import {
   universalLoader,
 } from "@/store/store";
 
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+
 export default function AllJobsComp() {
   const [allJobs, setAllJobs] = useRecoilState(allJobListings);
   const [loading, setLoading] = useRecoilState(universalLoader);
@@ -53,7 +62,7 @@ export default function AllJobsComp() {
   return (
     <>
       {errorNoPost ? (
-        <div className="w-full h-full flex items-center justify-center">
+        <div className="w-full h-screen max-h-screen flex items-center justify-center">
           <p>No Post found</p>
         </div>
       ) : (
