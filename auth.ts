@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
-import prisma from "./db";
+import prisma from "./db/index";
 import { signinSchema } from "./schema/auth";
 import { NextConfig } from "next";
 import bcrypt from "bcryptjs";
