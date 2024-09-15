@@ -2,12 +2,16 @@
   "name": "jobjunction",
   "version": "0.1.0",
   "private": true,
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate --no-engine"
+    "postinstall": "prisma generate --no-engine",
+    "prisma:seed": "npx prisma db seed"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -65,7 +69,7 @@
   },
   "devDependencies": {
     "@types/lowlight": "^0.0.7",
-    "@types/node": "^20",
+    "@types/node": "^20.16.5",
     "@types/randomstring": "^1.3.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -75,6 +79,7 @@
     "postcss": "^8",
     "prisma": "^5.18.0",
     "tailwindcss": "^3.4.4",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
   }
 }
