@@ -123,4 +123,7 @@ main()
   .then(() => {
     console.log("Successfully seeded");
   })
-  .catch((err) => console.log(err));
+  .catch((err) => console.log(err))
+  .finally(() => {
+    prisma.$disconnect();
+  });
