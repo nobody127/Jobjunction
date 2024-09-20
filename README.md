@@ -53,9 +53,41 @@ We are using the pretty standard tech that is mostly popular in market
 
 Before going to contribute in this project , i will like to address that just don't spam it for testing your open source skills. You must have knowledge of any of the tech being used and you must be serious for contirbuting .
 
+## WITH DOCKER
+
 1. Fork this repo and clone the repo
 
-`git clone https://github.com/yourusername/Jobjunction`
+```
+git clone https://github.com/yourusername/Jobjunction
+```
+
+2. Copy over the `.env.example` & `.env.local.example` in the root folder. You can get the google client id and secret from google cloud console .
+
+```
+
+openssl rand -base64 32 //run this in the terminal pr browser to generate the Auth secret & paste it
+
+```
+
+3. Start the application with this command
+
+```
+docker compose up --build --watch
+```
+
+4. To stop and delete container , you can use this
+
+```
+docker compose down
+```
+
+## WITHOUT DOCKER
+
+1. Fork this repo and clone the repo
+
+```
+git clone https://github.com/yourusername/Jobjunction
+```
 
 2. In you pc , move to the folder & install the dependencies
 
@@ -63,31 +95,17 @@ Before going to contribute in this project , i will like to address that just do
 cd Jobjunction
 
 npm install
-
 ```
 
 3. Copy over the `.env.example` & `.env.local.example` in the root folder. You can get the google client id and secret from google cloud console .
 
 ```
 
-openssl rand -base64 32 //run this in the terminal to generate the Auth secret & paste it
+openssl rand -base64 32 //run this in the terminal pr browser to generate the Auth secret & paste it
 
 ```
 
-4. In the `.env` file, you can replace the `DATABASE_URL` with your's any cloud databse string or **_YOU CAN RUN THE COMMAND TO SPIN UP THE DATABASE IN DOCKER_**
-
-```
-//create volume
-
-docker volume create job-junction
-
-//create the postgres db conatiner
-
-docker run -d -e POSTGRES_PASSWORD=hello -v job-junction:/var/lib/postgresql/data -p 5432:5432 postgres:alpine
-
-//You don't need to change the env Database url then
-
-```
+4. In the `.env` file, you can replace the `DATABASE_URL` with your's any cloud databse string or local database string
 
 5. Push the database first and then re-generate client
 
@@ -102,9 +120,7 @@ docker run -d -e POSTGRES_PASSWORD=hello -v job-junction:/var/lib/postgresql/dat
 ```
 npm run prisma:seed
 
-//Can run studio to check if actually seeded or not
-
-npx prisma studio // should see 2users and 2 posts
+npx prisma studio
 ```
 
 7. Start the server
@@ -112,6 +128,8 @@ npx prisma studio // should see 2users and 2 posts
 ```
 npm run dev
 ```
+
+## Login With This Data
 
 Seeded data detials
 

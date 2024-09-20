@@ -25,6 +25,7 @@ import { useRecoilState } from "recoil";
 import EditUserProfileDialog from "./EditDialog";
 import { TbExternalLink } from "react-icons/tb";
 import Link from "next/link";
+import { UserRole } from "@prisma/client";
 
 export default function UserProfileDashboard() {
   const [accountCreated, setAccountCreated] = useState<string>();
@@ -44,7 +45,7 @@ export default function UserProfileDashboard() {
     bio: null,
     avatar: null,
     createdAt: new Date(Date.now()),
-    role: "",
+    role: UserRole.USER,
   });
 
   const { userId }: { userId: string } = useParams();
